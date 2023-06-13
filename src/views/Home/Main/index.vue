@@ -150,17 +150,30 @@ export default {
     }
     //点击保存更新并返回首页
     function onSubmit() {
-      // console.log(sizeForm);
-      
-      // tableData.value = Object.values(sizeForm);
-      // console.log(Object.values(sizeForm))
-      // row.name=this.sizeForm.cname
-      // row.age=this.sizeForm.cage
-      // row.eBG=this.sizeForm.ceBG
-      // row.school=this.sizeForm.cschool
-      // row.wAge = this.sizeForm.cwAge
-      // console.log(tableData);
-      // show.value = true;
+      const editedRow = {
+        name: sizeForm.cname,
+        age: sizeForm.cage,
+        eBG: sizeForm.ceBG,
+        school: sizeForm.cschool,
+        wAge: sizeForm.cwAge
+      };
+
+      // 使用cname作为唯一标识符在tableData数组中查找已编辑行的索引。
+      const rowIndex = tableData.value.findIndex(row => row.name === editedRow.name);
+
+      // 用edit表单中的值更新该索引处的数据。
+      if (rowIndex !== -1) {
+        Object.assign(tableData.value[rowIndex], editedRow);
+
+        // 更新表数据后，将输入字段重置为空字符串。
+        sizeForm.cname = '';
+        sizeForm.cage = '';
+        sizeForm.ceBG = '';
+        sizeForm.cschool = '';
+        sizeForm.cwAge = '';
+
+        show.value = true;
+      }
     }
     return {
       search: search,
