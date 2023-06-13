@@ -1,91 +1,143 @@
 <template>
-  <el-table :data="filterTableData" style="width: 100%">
-    <el-table-column fixed prop="date" label="Date" width="150" />
-    <el-table-column prop="name" label="Name" width="120" />
-    <el-table-column prop="state" label="State" width="120" />
-    <el-table-column prop="city" label="City" width="120" />
-    <el-table-column prop="address" label="Address" width="300" />
-    <el-table-column prop="zip" label="Zip" width="120" />
+  <el-table v-if="show" :data="filterTableData" style="width: 100%" height="300px">
+    <el-table-column prop="name" label="姓名" width="120" />
+    <el-table-column prop="age" label="年龄" width="120" />
+    <el-table-column prop="eBG" label="学历" width="120" />
+    <el-table-column prop="school" label="毕业院校" width="200" />
+    <el-table-column prop="wAge" label="工作年限" width="120" />
 
     <el-table-column align="right">
       <template #header>
-        <el-input v-model="search" size="small" placeholder="Type to search" />
+        <el-input v-model="search" size="small" placeholder="关键字搜索" />
       </template>
       <template #default="scope">
-        <el-button size="small" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
-        <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+        <el-button size="small" @click="handleEdit(scope.row)"> 编辑 </el-button>
+        <el-button size="small" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
+  <el-form v-else ref="form" :model="sizeForm" label-width="auto">
+    <el-form-item label="姓名">
+      <el-input v-model="sizeForm.cname" />
+    </el-form-item>
+    <el-form-item label="年龄">
+      <el-input v-model="sizeForm.cage" />
+    </el-form-item>
+    <el-form-item label="学历">
+      <el-input v-model="sizeForm.ceBG" />
+    </el-form-item>
+    <el-form-item label="毕业院校">
+      <el-input v-model="sizeForm.cschool" />
+    </el-form-item>
+    <el-form-item label="工作年限">
+      <el-input v-model="sizeForm.cwAge" />
+    </el-form-item>
+
+    <!-- <el-form-item label="是否实习生">
+      <el-select v-model="sizeForm.region" placeholder="选择">
+        <el-option label="是" value="yes" />
+        <el-option label="否" value="no" />
+      </el-select>
+    </el-form-item> -->
+    <!-- <el-form-item label="性别">
+      <el-radio-group v-model="sizeForm.resource">
+        <el-radio border label="男" />
+        <el-radio border label="女" />
+      </el-radio-group>
+    </el-form-item> -->
+    <el-form-item>
+      <el-button type="primary" @click="onSubmit">保存</el-button>
+      <el-button @click="turn">取消</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, reactive } from "vue";
 var search = ref("");
+
+const sizeForm = reactive({
+  cname: "",
+  cage: "",
+  ceBG: "",
+  cschool: "",
+  cwAge: "",
+})
+function onSubmit() {
+  console.log(this.sizeForm)
+}
 var tableData = ref([
   {
-    date: "2016-05-01",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
+    name: "小红",
+    age: "22",
+    eBG: "本科",
+    school: "广东技术师范大学",
+    wAge: "1",
   },
   {
-    date: "2016-05-02",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
+    name: "小蓝",
+    age: "23",
+    eBG: "本科",
+    school: "香港中文大学",
+    wAge: "1",
   },
   {
-    date: "2016-05-03",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
+    name: "小绿",
+    age: "33",
+    eBG: "研究生",
+    school: "深圳大学",
+    wAge: "4",
   },
   {
-    date: "2016-05-03",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
+    name: "小粉",
+    age: "32",
+    eBG: "研究生",
+    school: "厦门大学",
+    wAge: "5",
   },
   {
-    date: "2016-05-03",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
+    name: "紫薇",
+    age: "25",
+    eBG: "大专",
+    school: "深圳信息职业技术学院",
+    wAge: "1",
   },
 ]);
 var filterTableData = computed(function () {
   return tableData.value.filter(function (data) {
     return (
       !search.value ||
-      data.name.toLowerCase().includes(search.value.toLowerCase())
+      data.name.toLowerCase().includes(search.value.toLowerCase()) ||
+      data.age.toLowerCase().includes(search.value.toLowerCase()) ||
+      data.eBG.toLowerCase().includes(search.value.toLowerCase()) ||
+      data.school.toLowerCase().includes(search.value.toLowerCase()) ||
+      data.wAge.toLowerCase().includes(search.value.toLowerCase())
     );
   });
 });
-function handleEdit(index, row) {
-  console.log(index, row);
+function handleEdit(row) {
+  this.show = false
+  // const sizeForm = this.sizeForm
+  this.sizeForm.cname = row.name
+  this.sizeForm.cage = row.age
+  this.sizeForm.ceBG = row.eBG
+  this.sizeForm.cschool = row.school
+  this.sizeForm.cwAge = row.wAge
+  // console.log(this.sizeForm)
 }
-function handleDelete(index, row) {
-  console.log(index, row);
+function handleDelete(index) {
+  tableData.value.splice(index, 1)
 }
 export default {
   name: "Table",
   setup() {
+    var show = ref(true);
     return {
       search: search,
       filterTableData: filterTableData,
       handleEdit: handleEdit,
       handleDelete: handleDelete,
+      show, onSubmit, sizeForm
     };
   },
 };
@@ -94,5 +146,9 @@ export default {
 <style scoped>
 .common-layout {
   background-color: blue;
+}
+
+.el-radio-group {
+  margin-right: 12px;
 }
 </style>
