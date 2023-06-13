@@ -1,5 +1,10 @@
 <template>
-  <el-table v-if="show" :data="filterTableData" style="width: 100%" height="300px">
+  <el-table
+    v-if="show"
+    :data="filterTableData"
+    style="width: 100%"
+    height="300px"
+  >
     <el-table-column prop="name" label="姓名" width="120" />
     <el-table-column prop="age" label="年龄" width="120" />
     <el-table-column prop="eBG" label="学历" width="120" />
@@ -11,12 +16,19 @@
         <el-input v-model="search" size="small" placeholder="关键字搜索" />
       </template>
       <template #default="scope">
-        <el-button size="small" @click="handleEdit(scope.row)"> 编辑 </el-button>
-        <el-button size="small" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
+        <el-button size="small" @click="handleEdit(scope.row)">
+          编辑
+        </el-button>
+        <el-button
+          size="small"
+          type="danger"
+          @click="handleDelete(scope.$index)"
+          >删除</el-button
+        >
       </template>
     </el-table-column>
   </el-table>
-  <el-form v-else ref="form" :model="sizeForm" label-width="auto">
+  <el-form v-else-if="!show" ref="form" :model="sizeForm" label-width="auto">
     <el-form-item label="姓名">
       <el-input v-model="sizeForm.cname" />
     </el-form-item>
@@ -46,8 +58,8 @@
       </el-radio-group>
     </el-form-item> -->
     <el-form-item>
-      <el-button type="primary" @click="onSubmit">保存</el-button>
-      <el-button @click="turn">取消</el-button>
+      <el-button type="primary" @click="onSubmit()">保存</el-button>
+      <el-button @click="backHome">取消</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -62,10 +74,8 @@ const sizeForm = reactive({
   ceBG: "",
   cschool: "",
   cwAge: "",
-})
-function onSubmit() {
-  console.log(this.sizeForm)
-}
+});
+
 var tableData = ref([
   {
     name: "小红",
@@ -103,6 +113,7 @@ var tableData = ref([
     wAge: "1",
   },
 ]);
+
 var filterTableData = computed(function () {
   return tableData.value.filter(function (data) {
     return (
@@ -116,28 +127,50 @@ var filterTableData = computed(function () {
   });
 });
 function handleEdit(row) {
-  this.show = false
+  this.show = false;
   // const sizeForm = this.sizeForm
-  this.sizeForm.cname = row.name
-  this.sizeForm.cage = row.age
-  this.sizeForm.ceBG = row.eBG
-  this.sizeForm.cschool = row.school
-  this.sizeForm.cwAge = row.wAge
+  this.sizeForm.cname = row.name;
+  this.sizeForm.cage = row.age;
+  this.sizeForm.ceBG = row.eBG;
+  this.sizeForm.cschool = row.school;
+  this.sizeForm.cwAge = row.wAge;
   // console.log(this.sizeForm)
 }
 function handleDelete(index) {
-  tableData.value.splice(index, 1)
+  tableData.value.splice(index, 1);
 }
 export default {
   name: "Table",
   setup() {
+    //点击取消时跳转回首页
     var show = ref(true);
+    function backHome() {
+      show.value = true;
+      // console.log(show.value);
+    }
+    //点击保存更新并返回首页
+    function onSubmit() {
+      // console.log(sizeForm);
+      
+      // tableData.value = Object.values(sizeForm);
+      // console.log(Object.values(sizeForm))
+      // row.name=this.sizeForm.cname
+      // row.age=this.sizeForm.cage
+      // row.eBG=this.sizeForm.ceBG
+      // row.school=this.sizeForm.cschool
+      // row.wAge = this.sizeForm.cwAge
+      // console.log(tableData);
+      // show.value = true;
+    }
     return {
       search: search,
       filterTableData: filterTableData,
       handleEdit: handleEdit,
       handleDelete: handleDelete,
-      show, onSubmit, sizeForm
+      show,
+      onSubmit,
+      sizeForm,
+      backHome,
     };
   },
 };
