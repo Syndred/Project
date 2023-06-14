@@ -1,7 +1,7 @@
 <template>
   <!-- <h1>{{ $store.state.message }}</h1> -->
   <!-- 简历表格 -->
-  <el-table v-if="show" :data="filterTableData" style="width: 100%" height="300px">
+  <el-table v-if="show" :data="filterTableData" style="width: 100%" height="300px" >
     <el-table-column prop="name" label="姓名" width="120" />
     <el-table-column prop="age" label="年龄" width="120" />
     <el-table-column prop="eBG" label="学历" width="120" />
@@ -9,9 +9,9 @@
     <el-table-column prop="wAge" label="工作年限" width="120" />
 
     <!-- 搜索框 -->
-    <el-table-column align="right">
+    <el-table-column align="right" >
       <template #header>
-        <el-input v-model="search" size="small" placeholder="关键字搜索" />
+        <el-input v-model="search" size="small" placeholder="关键字搜索" style="width: 300px;"/>
       </template>
 
       <!-- 编辑和删除按钮 -->
@@ -69,10 +69,7 @@ import { useRouter } from "vue-router";
 // 搜索框初始化
 var search = ref("");
 
-// 删除逻辑
-function handleDelete(index) {
-  tableData.value.splice(index, 1);
-}
+
 
 // 初始化更新值
 const sizeForm = reactive({
@@ -96,14 +93,18 @@ export default {
       return tableData.value.filter(function (data) {
         return (
           !search.value ||
-          data.name.toLowerCase().includes(search.value.toLowerCase()) ||
-          data.age.toLowerCase().includes(search.value.toLowerCase()) ||
-          data.eBG.toLowerCase().includes(search.value.toLowerCase()) ||
-          data.school.toLowerCase().includes(search.value.toLowerCase()) ||
-          data.wAge.toLowerCase().includes(search.value.toLowerCase())
+          data.name.includes(search.value.toLowerCase()) ||
+          data.age.includes(search.value.toLowerCase()) ||
+          data.eBG.includes(search.value.toLowerCase()) ||
+          data.school.includes(search.value.toLowerCase()) ||
+          data.wAge.includes(search.value.toLowerCase())
         );
       });
     });
+    // 删除逻辑
+    function handleDelete(index) {
+      tableData.value.splice(index, 1);
+    }
     //处理编辑业务
     function handleEdit(row) {
       // router.push("/edit");
@@ -153,7 +154,7 @@ export default {
     }
     return {
       search: search,
-      handleEdit: handleEdit,
+      handleEdit,
       filterTableData,
       handleDelete,
       show,
@@ -167,11 +168,7 @@ export default {
 </script>
 
 <style scoped>
-.common-layout {
-  background-color: blue;
-}
 
-.el-radio-group {
-  margin-right: 12px;
-}
+
+
 </style>

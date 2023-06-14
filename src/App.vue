@@ -2,7 +2,7 @@
   <div>
     <div class="common-layout">
       <el-container>
-        <el-aside>
+        <!-- <el-aside>
           <el-row class="tac">
             <el-col>
               <el-menu active-text-color="#ffd04b" background-color="#545c64" class="el-menu-vertical-demo"
@@ -72,11 +72,11 @@
               </el-menu>
             </el-col>
           </el-row>
-        </el-aside>
+        </el-aside> -->
         <el-container>
           <el-header>
             <el-menu :default-active="$route.path" :router="true" class="el-menu-demo" mode="horizontal"
-              background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" @select="handleSelect">
+              background-color="#336666" text-color="#fff" active-text-color="#ffd04b" @select="handleSelect">
               <el-menu-item index="/main" @click="toMain">简历信息</el-menu-item>
               <el-menu-item index="/enter" @click="toEnter">简历录入</el-menu-item>
               <el-menu-item index="4">Orders</el-menu-item>
@@ -138,7 +138,7 @@ export default {
 }
 
 .el-main {
-  background-color: pink;
+  background-color: #ffffff;
   overflow: auto;
   height: 88vh;
 }
@@ -156,8 +156,5 @@ export default {
   padding: 0;
 }
 
-.el-aside {
-  background: #cacaca;
-  width: 200px;
-}
+
 </style>

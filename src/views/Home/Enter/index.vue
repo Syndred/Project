@@ -11,7 +11,7 @@
     <br />
 
     <!-- 录入简历结构 -->
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" >
         <el-form-item label="姓名" prop="name">
             <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
@@ -108,3 +108,9 @@ export default {
     },
 };
 </script>
+
+<style>
+/* .el-main{
+    background-color: #336666;
+} */
+</style>
