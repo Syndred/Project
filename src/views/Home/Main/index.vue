@@ -1,4 +1,6 @@
 <template>
+  <!-- <h1>{{ $store.state.message }}</h1> -->
+  <!-- 简历表格 -->
   <el-table v-if="show" :data="filterTableData" style="width: 100%" height="300px">
     <el-table-column prop="name" label="姓名" width="120" />
     <el-table-column prop="age" label="年龄" width="120" />
@@ -6,10 +8,13 @@
     <el-table-column prop="school" label="毕业院校" width="200" />
     <el-table-column prop="wAge" label="工作年限" width="120" />
 
+    <!-- 搜索框 -->
     <el-table-column align="right">
       <template #header>
         <el-input v-model="search" size="small" placeholder="关键字搜索" />
       </template>
+
+      <!-- 编辑和删除按钮 -->
       <template #default="scope">
         <el-button size="small" @click="handleEdit(scope.row)">
           编辑
@@ -18,6 +23,8 @@
       </template>
     </el-table-column>
   </el-table>
+
+  <!-- 修改页面展示 -->
   <el-form v-else-if="!show" ref="form" :model="sizeForm" label-width="auto">
     <el-form-item label="姓名">
       <el-input v-model="sizeForm.cname" />
@@ -55,64 +62,12 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
 import { computed, ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 
 // 搜索框初始化
 var search = ref("");
-
-// 渲染数据
-var tableData = ref([
-  {
-    name: "小红",
-    age: "22",
-    eBG: "本科",
-    school: "广东技术师范大学",
-    wAge: "1",
-  },
-  {
-    name: "小蓝",
-    age: "23",
-    eBG: "本科",
-    school: "香港中文大学",
-    wAge: "1",
-  },
-  {
-    name: "小绿",
-    age: "33",
-    eBG: "研究生",
-    school: "深圳大学",
-    wAge: "4",
-  },
-  {
-    name: "小粉",
-    age: "32",
-    eBG: "研究生",
-    school: "厦门大学",
-    wAge: "5",
-  },
-  {
-    name: "紫薇",
-    age: "25",
-    eBG: "大专",
-    school: "深圳信息职业技术学院",
-    wAge: "1",
-  },
-]);
-
-// 搜索逻辑
-var filterTableData = computed(function () {
-  return tableData.value.filter(function (data) {
-    return (
-      !search.value ||
-      data.name.toLowerCase().includes(search.value.toLowerCase()) ||
-      data.age.toLowerCase().includes(search.value.toLowerCase()) ||
-      data.eBG.toLowerCase().includes(search.value.toLowerCase()) ||
-      data.school.toLowerCase().includes(search.value.toLowerCase()) ||
-      data.wAge.toLowerCase().includes(search.value.toLowerCase())
-    );
-  });
-});
 
 // 删除逻辑
 function handleDelete(index) {
@@ -131,7 +86,24 @@ const sizeForm = reactive({
 export default {
   name: "Table",
   setup() {
-    const router = useRouter();
+    // 使用vuex仓库
+    const store = useStore();
+    // 拿去数据并保存到tableData中
+    var tableData = ref(store.state.message);
+    // var tableData = ref($store.state.message)
+    // 搜索逻辑
+    var filterTableData = computed(function () {
+      return tableData.value.filter(function (data) {
+        return (
+          !search.value ||
+          data.name.toLowerCase().includes(search.value.toLowerCase()) ||
+          data.age.toLowerCase().includes(search.value.toLowerCase()) ||
+          data.eBG.toLowerCase().includes(search.value.toLowerCase()) ||
+          data.school.toLowerCase().includes(search.value.toLowerCase()) ||
+          data.wAge.toLowerCase().includes(search.value.toLowerCase())
+        );
+      });
+    });
     //处理编辑业务
     function handleEdit(row) {
       // router.push("/edit");
@@ -150,7 +122,7 @@ export default {
       show.value = true;
       // console.log(show.value);
     }
-    //点击保存更新并返回首页
+    //点击保存更新并返回展示
     function onSubmit() {
       const editedRow = {
         name: sizeForm.cname,
@@ -181,13 +153,14 @@ export default {
     }
     return {
       search: search,
-      filterTableData: filterTableData,
       handleEdit: handleEdit,
+      filterTableData,
       handleDelete,
       show,
       onSubmit,
       sizeForm,
       backHome,
+      tableData,
     };
   },
 };

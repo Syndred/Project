@@ -75,8 +75,8 @@
         </el-aside>
         <el-container>
           <el-header>
-            <el-menu :default-active="$route.path" :router="true" class="el-menu-demo" mode="horizontal" background-color="#545c64"
-              text-color="#fff" active-text-color="#ffd04b" @select="handleSelect">
+            <el-menu :default-active="$route.path" :router="true" class="el-menu-demo" mode="horizontal"
+              background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" @select="handleSelect">
               <el-menu-item index="/main" @click="toMain">简历信息</el-menu-item>
               <el-menu-item index="/enter" @click="toEnter">简历录入</el-menu-item>
               <el-menu-item index="4">Orders</el-menu-item>
@@ -120,10 +120,10 @@ export default {
       console.log(key, keyPath);
     };
     const toMain = () => {
-      router.push('/main')
+      router.push("/main");
     };
     const toEnter = () => {
-      router.push('/enter')
+      router.push("/enter");
     };
 
     return { handleSelect, handleOpen, handleClose, toMain, toEnter };
