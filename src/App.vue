@@ -9,7 +9,9 @@
                 default-active="2" text-color="#fff" @open="handleOpen" @close="handleClose">
                 <el-sub-menu index="1">
                   <template #title>
- <el-icon><Plus /></el-icon>
+                    <el-icon>
+                      <Plus />
+                    </el-icon>
                     <span>Navigator One</span>
                   </template>
                   <el-menu-item-group title="Group One">
@@ -73,10 +75,10 @@
         </el-aside>
         <el-container>
           <el-header>
-            <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" background-color="#545c64"
+            <el-menu :default-active="$route.path" :router="true" class="el-menu-demo" mode="horizontal" background-color="#545c64"
               text-color="#fff" active-text-color="#ffd04b" @select="handleSelect">
-              <el-menu-item index="1"><router-link to="/">简历库</router-link></el-menu-item>
-              <el-menu-item index="3"><router-link to="/enter">简历录入</router-link></el-menu-item>
+              <el-menu-item index="/main" @click="toMain">简历信息</el-menu-item>
+              <el-menu-item index="/enter" @click="toEnter">简历录入</el-menu-item>
               <el-menu-item index="4">Orders</el-menu-item>
               <el-sub-menu index="2">
                 <template #title>Workspace</template>
@@ -93,7 +95,6 @@
             </el-menu>
           </el-header>
           <el-main>
-           
             <router-view></router-view>
           </el-main>
         </el-container>
@@ -104,10 +105,11 @@
 
 <script>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 export default {
   setup() {
-    const activeIndex = ref("1");
-    const activeIndex2 = ref("1");
+    const router = useRouter();
+
     const handleSelect = (key, keyPath) => {
       console.log(key, keyPath);
     };
@@ -117,21 +119,28 @@ export default {
     const handleClose = (key, keyPath) => {
       console.log(key, keyPath);
     };
-    return { activeIndex, activeIndex2, handleSelect, handleOpen, handleClose };
+    const toMain = () => {
+      router.push('/main')
+    };
+    const toEnter = () => {
+      router.push('/enter')
+    };
+
+    return { handleSelect, handleOpen, handleClose, toMain, toEnter };
   },
 };
 </script>
 
 <style scoped>
-
-*{
+* {
   margin: 0;
   padding: 0;
 }
+
 .el-main {
   background-color: pink;
   overflow: auto;
-  height: 93.5vh;
+  height: 88vh;
 }
 
 .el-menu-item {
@@ -151,5 +160,4 @@ export default {
   background: #cacaca;
   width: 200px;
 }
-
 </style>

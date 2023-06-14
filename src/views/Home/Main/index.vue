@@ -1,10 +1,5 @@
 <template>
-  <el-table
-    v-if="show"
-    :data="filterTableData"
-    style="width: 100%"
-    height="300px"
-  >
+  <el-table v-if="show" :data="filterTableData" style="width: 100%" height="300px">
     <el-table-column prop="name" label="姓名" width="120" />
     <el-table-column prop="age" label="年龄" width="120" />
     <el-table-column prop="eBG" label="学历" width="120" />
@@ -19,12 +14,7 @@
         <el-button size="small" @click="handleEdit(scope.row)">
           编辑
         </el-button>
-        <el-button
-          size="small"
-          type="danger"
-          @click="handleDelete(scope.$index)"
-          >删除</el-button
-        >
+        <el-button size="small" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -66,16 +56,12 @@
 
 <script>
 import { computed, ref, reactive } from "vue";
+import { useRouter } from "vue-router";
+
+// 搜索框初始化
 var search = ref("");
 
-const sizeForm = reactive({
-  cname: "",
-  cage: "",
-  ceBG: "",
-  cschool: "",
-  cwAge: "",
-});
-
+// 渲染数据
 var tableData = ref([
   {
     name: "小红",
@@ -114,6 +100,7 @@ var tableData = ref([
   },
 ]);
 
+// 搜索逻辑
 var filterTableData = computed(function () {
   return tableData.value.filter(function (data) {
     return (
@@ -126,22 +113,37 @@ var filterTableData = computed(function () {
     );
   });
 });
-function handleEdit(row) {
-  this.show = false;
-  // const sizeForm = this.sizeForm
-  this.sizeForm.cname = row.name;
-  this.sizeForm.cage = row.age;
-  this.sizeForm.ceBG = row.eBG;
-  this.sizeForm.cschool = row.school;
-  this.sizeForm.cwAge = row.wAge;
-  // console.log(this.sizeForm)
-}
+
+// 删除逻辑
 function handleDelete(index) {
   tableData.value.splice(index, 1);
 }
+
+// 初始化更新值
+const sizeForm = reactive({
+  cname: "",
+  cage: "",
+  ceBG: "",
+  cschool: "",
+  cwAge: "",
+});
+
 export default {
   name: "Table",
   setup() {
+    const router = useRouter();
+    //处理编辑业务
+    function handleEdit(row) {
+      // router.push("/edit");
+      this.show = false;
+      // const sizeForm = this.sizeForm
+      this.sizeForm.cname = row.name;
+      this.sizeForm.cage = row.age;
+      this.sizeForm.ceBG = row.eBG;
+      this.sizeForm.cschool = row.school;
+      this.sizeForm.cwAge = row.wAge;
+      // console.log(this.sizeForm)
+    }
     //点击取消时跳转回首页
     var show = ref(true);
     function backHome() {
@@ -155,23 +157,25 @@ export default {
         age: sizeForm.cage,
         eBG: sizeForm.ceBG,
         school: sizeForm.cschool,
-        wAge: sizeForm.cwAge
+        wAge: sizeForm.cwAge,
       };
 
       // 使用cname作为唯一标识符在tableData数组中查找已编辑行的索引。
-      const rowIndex = tableData.value.findIndex(row => row.name === editedRow.name);
+      const rowIndex = tableData.value.findIndex(
+        (row) => row.name === editedRow.name
+      );
 
       // 用edit表单中的值更新该索引处的数据。
       if (rowIndex !== -1) {
         Object.assign(tableData.value[rowIndex], editedRow);
 
         // 更新表数据后，将输入字段重置为空字符串。
-        sizeForm.cname = '';
-        sizeForm.cage = '';
-        sizeForm.ceBG = '';
-        sizeForm.cschool = '';
-        sizeForm.cwAge = '';
-
+        sizeForm.cname = "";
+        sizeForm.cage = "";
+        sizeForm.ceBG = "";
+        sizeForm.cschool = "";
+        sizeForm.cwAge = "";
+        // 返回展示页面
         show.value = true;
       }
     }
@@ -179,7 +183,7 @@ export default {
       search: search,
       filterTableData: filterTableData,
       handleEdit: handleEdit,
-      handleDelete: handleDelete,
+      handleDelete,
       show,
       onSubmit,
       sizeForm,
