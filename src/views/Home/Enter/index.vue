@@ -11,7 +11,7 @@
     <br />
 
     <!-- 录入简历结构 -->
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" >
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="姓名" prop="name">
             <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
@@ -34,7 +34,7 @@
         </el-form-item>
         <!-- 底部按钮 -->
         <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')">录入</el-button>
+            <el-button color="#336666" type="primary" @click="submitForm('ruleForm')">录入</el-button>
             <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
     </el-form>

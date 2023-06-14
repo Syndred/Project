@@ -1,7 +1,7 @@
 <template>
   <!-- <h1>{{ $store.state.message }}</h1> -->
   <!-- 简历表格 -->
-  <el-table v-if="show" :data="filterTableData" style="width: 100%" height="300px" >
+  <el-table v-if="show" :data="filterTableData" style="width: 100%" height="300px" class="form">
     <el-table-column prop="name" label="姓名" width="120" />
     <el-table-column prop="age" label="年龄" width="120" />
     <el-table-column prop="eBG" label="学历" width="120" />
@@ -9,17 +9,17 @@
     <el-table-column prop="wAge" label="工作年限" width="120" />
 
     <!-- 搜索框 -->
-    <el-table-column align="right" >
+    <el-table-column align="right">
       <template #header>
-        <el-input v-model="search" size="small" placeholder="关键字搜索" style="width: 300px;"/>
+        <el-input v-model="search" size="middle" placeholder="关键字搜索" style="width: 200px" />
       </template>
 
       <!-- 编辑和删除按钮 -->
       <template #default="scope">
-        <el-button size="small" @click="handleEdit(scope.row)">
+        <el-button color="#336666" size="middle" @click="handleEdit(scope.row)">
           编辑
         </el-button>
-        <el-button size="small" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
+        <el-button size="middle" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -55,7 +55,7 @@
       </el-radio-group>
     </el-form-item> -->
     <el-form-item>
-      <el-button type="primary" @click="onSubmit()">保存</el-button>
+      <el-button color="#336666" type="primary" @click="onSubmit()">保存</el-button>
       <el-button @click="backHome">取消</el-button>
     </el-form-item>
   </el-form>
@@ -68,8 +68,6 @@ import { useRouter } from "vue-router";
 
 // 搜索框初始化
 var search = ref("");
-
-
 
 // 初始化更新值
 const sizeForm = reactive({
@@ -168,7 +166,8 @@ export default {
 </script>
 
 <style scoped>
-
-
-
+.form {
+  border: 3px solid #336666;
+  border-radius: 10px;
+}
 </style>

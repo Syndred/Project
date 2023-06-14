@@ -76,7 +76,7 @@
         <el-container>
           <el-header>
             <el-menu :default-active="$route.path" :router="true" class="el-menu-demo" mode="horizontal"
-              background-color="#336666" text-color="#fff" active-text-color="#ffd04b" @select="handleSelect">
+              background-color="#336666" text-color="#fff" active-text-color="#80FFFF" @select="handleSelect">
               <el-menu-item index="/main" @click="toMain">简历信息</el-menu-item>
               <el-menu-item index="/enter" @click="toEnter">简历录入</el-menu-item>
               <el-menu-item index="4">Orders</el-menu-item>
@@ -138,7 +138,7 @@ export default {
 }
 
 .el-main {
-  background-color: #ffffff;
+  background-color: #efefef;
   overflow: auto;
   height: 88vh;
 }
@@ -155,6 +155,4 @@ export default {
 .el-header {
   padding: 0;
 }
-
-
 </style>
