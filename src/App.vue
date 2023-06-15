@@ -79,17 +79,17 @@
               background-color="#336666" text-color="#fff" active-text-color="#80FFFF" @select="handleSelect">
               <el-menu-item index="/main" @click="toMain">简历信息</el-menu-item>
               <el-menu-item index="/enter" @click="toEnter">简历录入</el-menu-item>
-              <el-menu-item index="4">Orders</el-menu-item>
+              <el-menu-item index="4">岗位录入</el-menu-item>
               <el-sub-menu index="2">
-                <template #title>Workspace</template>
-                <el-menu-item index="2-1">item one</el-menu-item>
-                <el-menu-item index="2-2">item two</el-menu-item>
-                <el-menu-item index="2-3">item three</el-menu-item>
+                <template #title>岗位信息</template>
+                <el-menu-item index="2-1">会计</el-menu-item>
+                <el-menu-item index="2-2">销售</el-menu-item>
+                <el-menu-item index="2-3">运营</el-menu-item>
                 <el-sub-menu index="2-4">
-                  <template #title>item four</template>
-                  <el-menu-item index="2-4-1">item one</el-menu-item>
-                  <el-menu-item index="2-4-2">item two</el-menu-item>
-                  <el-menu-item index="2-4-3">item three</el-menu-item>
+                  <template #title>开发</template>
+                  <el-menu-item index="2-4-1">UI</el-menu-item>
+                  <el-menu-item index="2-4-2">前端</el-menu-item>
+                  <el-menu-item index="2-4-3">后端</el-menu-item>
                 </el-sub-menu>
               </el-sub-menu>
             </el-menu>

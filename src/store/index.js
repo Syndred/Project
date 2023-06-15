@@ -48,8 +48,8 @@ export default createStore({
     DEL(state, index) {
       state.message.splice(index, 1);
     },
-    UPDATE(state, { index, editedRow }) {
-      Object.assign(state.message[index], editedRow);
+    UPDATE(state, { index, sizeForm }) {
+      Object.assign(state.message[index], sizeForm);
     },
   },
   actions: {
@@ -59,8 +59,8 @@ export default createStore({
     del(context, index) {
       context.commit("DEL", index);
     },
-    update(context, { index, editedRow }) {
-      context.commit("UPDATE", { index, editedRow });
+    update(context, { index, sizeForm }) {
+      context.commit("UPDATE", { index, sizeForm });
     },
   },
   modules: {},

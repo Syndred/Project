@@ -27,19 +27,19 @@
   <!-- 修改页面展示 -->
   <el-form v-else-if="!show" ref="form" :model="sizeForm" label-width="auto">
     <el-form-item label="姓名">
-      <el-input v-model="sizeForm.cname" />
+      <el-input v-model="sizeForm.name" />
     </el-form-item>
     <el-form-item label="年龄">
-      <el-input v-model="sizeForm.cage" />
+      <el-input v-model="sizeForm.age" />
     </el-form-item>
     <el-form-item label="学历">
-      <el-input v-model="sizeForm.ceBG" />
+      <el-input v-model="sizeForm.eBG" />
     </el-form-item>
     <el-form-item label="毕业院校">
-      <el-input v-model="sizeForm.cschool" />
+      <el-input v-model="sizeForm.school" />
     </el-form-item>
     <el-form-item label="工作年限">
-      <el-input v-model="sizeForm.cwAge" />
+      <el-input v-model="sizeForm.wAge" />
     </el-form-item>
 
     <!-- <el-form-item label="是否实习生">
@@ -71,11 +71,11 @@ var search = ref("");
 
 // 初始化更新值
 const sizeForm = reactive({
-  cname: "",
-  cage: "",
-  ceBG: "",
-  cschool: "",
-  cwAge: "",
+  name: "",
+  age: "",
+  eBG: "",
+  school: "",
+  wAge: "",
 });
 
 export default {
@@ -105,15 +105,16 @@ export default {
       store.dispatch("del", index);
     }
     //处理编辑业务
+    //点击编辑按钮会将数据自动填写在更改框中
     function handleEdit(row) {
       // router.push("/edit");
       show.value = false;
       // const sizeForm = this.sizeForm
-      this.sizeForm.cname = row.name;
-      this.sizeForm.cage = row.age;
-      this.sizeForm.ceBG = row.eBG;
-      this.sizeForm.cschool = row.school;
-      this.sizeForm.cwAge = row.wAge;
+      this.sizeForm.name = row.name;
+      this.sizeForm.age = row.age;
+      this.sizeForm.eBG = row.eBG;
+      this.sizeForm.school = row.school;
+      this.sizeForm.wAge = row.wAge;
       // console.log(this.sizeForm)
     }
     //点击取消时跳转回首页
@@ -124,22 +125,16 @@ export default {
     }
     //点击保存更新并返回展示
     function onSubmit() {
-      const editedRow = {
-        name: sizeForm.cname,
-        age: sizeForm.cage,
-        eBG: sizeForm.ceBG,
-        school: sizeForm.cschool,
-        wAge: sizeForm.cwAge,
-      };
+
 
       // 使用cname作为唯一标识符在tableData数组中查找已编辑行的索引。
       const rowIndex = tableData.value.findIndex(
-        (row) => row.name === editedRow.name
+        (row) => row.name === sizeForm.name
       );
 
       // 用edit表单中的值更新该索引处的数据。
       if (rowIndex !== -1) {
-        store.dispatch("update", { index: rowIndex, editedRow });
+        store.dispatch("update", { index: rowIndex, sizeForm });
 
         // 返回展示页面
         show.value = true;
