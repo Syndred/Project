@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+import { createStore } from "vuex";
 
 export default createStore({
   state: {
@@ -45,10 +45,22 @@ export default createStore({
     ADD(state, value) {
       state.message.push(value);
     },
+    DEL(state, index) {
+      state.message.splice(index, 1);
+    },
+    UPDATE(state, { index, editedRow }) {
+      Object.assign(state.message[index], editedRow);
+    },
   },
   actions: {
     add(context, value) {
       context.commit("ADD", value);
+    },
+    del(context, index) {
+      context.commit("DEL", index);
+    },
+    update(context, { index, editedRow }) {
+      context.commit("UPDATE", { index, editedRow });
     },
   },
   modules: {},

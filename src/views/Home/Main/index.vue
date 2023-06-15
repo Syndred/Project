@@ -1,7 +1,7 @@
 <template>
   <!-- <h1>{{ $store.state.message }}</h1> -->
   <!-- 简历表格 -->
-  <el-table v-if="show" :data="filterTableData" style="width: 100%" height="300px" class="form">
+  <el-table v-if="show" :data="filterTableData" style="width: 100%" height="400px" class="form">
     <el-table-column prop="name" label="姓名" width="120" />
     <el-table-column prop="age" label="年龄" width="120" />
     <el-table-column prop="eBG" label="学历" width="120" />
@@ -11,15 +11,15 @@
     <!-- 搜索框 -->
     <el-table-column align="right">
       <template #header>
-        <el-input v-model="search" size="middle" placeholder="关键字搜索" style="width: 200px" />
+        <el-input v-model="search" placeholder="关键字搜索" style="width: 200px" />
       </template>
 
       <!-- 编辑和删除按钮 -->
       <template #default="scope">
-        <el-button color="#336666" size="middle" @click="handleEdit(scope.row)">
+        <el-button color="#336666" @click="handleEdit(scope.row)">
           编辑
         </el-button>
-        <el-button size="middle" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
+        <el-button type="danger" @click="handleDelete(scope.$index)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -83,7 +83,7 @@ export default {
   setup() {
     // 使用vuex仓库
     const store = useStore();
-    // 拿去数据并保存到tableData中
+    // 拿取数据并保存到tableData中
     var tableData = ref(store.state.message);
     // var tableData = ref($store.state.message)
     // 搜索逻辑
@@ -91,22 +91,23 @@ export default {
       return tableData.value.filter(function (data) {
         return (
           !search.value ||
-          data.name.includes(search.value.toLowerCase()) ||
-          data.age.includes(search.value.toLowerCase()) ||
-          data.eBG.includes(search.value.toLowerCase()) ||
-          data.school.includes(search.value.toLowerCase()) ||
-          data.wAge.includes(search.value.toLowerCase())
+          data.name.includes(search.value) ||
+          data.age.includes(search.value) ||
+          data.eBG.includes(search.value) ||
+          data.school.includes(search.value) ||
+          data.wAge.includes(search.value)
         );
       });
     });
     // 删除逻辑
     function handleDelete(index) {
-      tableData.value.splice(index, 1);
+      // tableData.value.splice(index, 1);
+      store.dispatch("del", index);
     }
     //处理编辑业务
     function handleEdit(row) {
       // router.push("/edit");
-      this.show = false;
+      show.value = false;
       // const sizeForm = this.sizeForm
       this.sizeForm.cname = row.name;
       this.sizeForm.cage = row.age;
@@ -138,18 +139,13 @@ export default {
 
       // 用edit表单中的值更新该索引处的数据。
       if (rowIndex !== -1) {
-        Object.assign(tableData.value[rowIndex], editedRow);
+        store.dispatch("update", { index: rowIndex, editedRow });
 
-        // 更新表数据后，将输入字段重置为空字符串。
-        sizeForm.cname = "";
-        sizeForm.cage = "";
-        sizeForm.ceBG = "";
-        sizeForm.cschool = "";
-        sizeForm.cwAge = "";
         // 返回展示页面
         show.value = true;
       }
     }
+
     return {
       search: search,
       handleEdit,
