@@ -19,26 +19,31 @@
         <el-button color="#336666" @click="handleEdit(scope.row)">
           编辑
         </el-button>
-        <el-button type="danger" @click="handleDelete(scope.$index)">删除</el-button>
+        <el-button type="danger" @click="handleDelete(scope.row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <!-- 修改页面展示 -->
-  <el-form v-else-if="!show" ref="form" :model="sizeForm" label-width="auto">
-    <el-form-item label="姓名">
+  <el-form v-else-if="!show" :model="sizeForm" :rules="rules" ref="formRef" label-width="auto" class="demo-ruleForm">
+    <el-form-item label="姓名" prop="name">
       <el-input v-model="sizeForm.name" />
     </el-form-item>
-    <el-form-item label="年龄">
+    <el-form-item label="年龄" prop="age">
       <el-input v-model="sizeForm.age" />
     </el-form-item>
-    <el-form-item label="学历">
-      <el-input v-model="sizeForm.eBG" />
+    <el-form-item label="学历" prop="eBG">
+      <el-select v-model="sizeForm.eBG" placeholder="请选择学历">
+        <el-option label="大专" value="大专"></el-option>
+        <el-option label="本科" value="本科"></el-option>
+        <el-option label="研究生" value="研究生"></el-option>
+        <el-option label="博士" value="博士"></el-option>
+      </el-select>
     </el-form-item>
-    <el-form-item label="毕业院校">
+    <el-form-item label="毕业院校" prop="school">
       <el-input v-model="sizeForm.school" />
     </el-form-item>
-    <el-form-item label="工作年限">
+    <el-form-item label="工作年限" prop="wAge">
       <el-input v-model="sizeForm.wAge" />
     </el-form-item>
 
@@ -64,18 +69,51 @@
 <script>
 import { useStore } from "vuex";
 import { computed, ref, reactive } from "vue";
-import { useRouter } from "vue-router";
 
 // 搜索框初始化
 var search = ref("");
 
 // 初始化更新值
 const sizeForm = reactive({
+  id: "",
   name: "",
   age: "",
   eBG: "",
   school: "",
   wAge: "",
+});
+
+//初始化formRef
+const formRef = ref(null);
+//编辑规则
+const checkAge = (rule, value, callback) => {
+  if (!value) {
+    return callback(new Error("年龄不能为空"));
+  }
+  setTimeout(() => {
+    if (value < 16 || value > 80) {
+      callback(new Error("年龄不符合规范"));
+    } else {
+      callback();
+    }
+  }, 500);
+};
+
+const rules = reactive({
+  name: [
+    { required: true, message: "请输入姓名", trigger: "blur" },
+    { min: 2, max: 5, message: "长度在 2 到 5 个字符", trigger: "blur" },
+  ],
+  age: [{ required: true, validator: checkAge, trigger: "change" }], // 修改为change触发
+  eBG: [{ required: true, message: "请选择学历", trigger: "change" }],
+  school: [
+    {
+      required: true,
+      message: "请输入毕业院校",
+      trigger: "blur",
+    },
+  ],
+  wAge: [{ required: true, message: "请输入工作年限", trigger: "blur" }],
 });
 
 export default {
@@ -84,7 +122,7 @@ export default {
     // 使用vuex仓库
     const store = useStore();
     // 拿取数据并保存到tableData中
-    var tableData = ref(store.state.message);
+    var tableData = ref(store.state.data);
     // var tableData = ref($store.state.message)
     // 搜索逻辑
     var filterTableData = computed(function () {
@@ -100,22 +138,24 @@ export default {
       });
     });
     // 删除逻辑
-    function handleDelete(index) {
+    function handleDelete(row) {
       // tableData.value.splice(index, 1);
-      store.dispatch("del", index);
+      store.dispatch("del", row.id);
+      // console.log(row)
     }
+
     //处理编辑业务
     //点击编辑按钮会将数据自动填写在更改框中
     function handleEdit(row) {
       // router.push("/edit");
       show.value = false;
-      // const sizeForm = this.sizeForm
+      this.sizeForm.id = row.id;
       this.sizeForm.name = row.name;
       this.sizeForm.age = row.age;
       this.sizeForm.eBG = row.eBG;
       this.sizeForm.school = row.school;
       this.sizeForm.wAge = row.wAge;
-      // console.log(this.sizeForm)
+      //  console.log(this.sizeForm)
     }
     //点击取消时跳转回首页
     var show = ref(true);
@@ -123,22 +163,22 @@ export default {
       show.value = true;
       // console.log(show.value);
     }
-    //点击保存更新并返回展示
+    //点击保存更新并返回展示并提交数据给vuex
     function onSubmit() {
-
-
-      // 使用cname作为唯一标识符在tableData数组中查找已编辑行的索引。
-      const rowIndex = tableData.value.findIndex(
-        (row) => row.name === sizeForm.name
-      );
-
-      // 用edit表单中的值更新该索引处的数据。
-      if (rowIndex !== -1) {
-        store.dispatch("update", { index: rowIndex, sizeForm });
-
-        // 返回展示页面
-        show.value = true;
-      }
+      //表单检验
+      formRef.value.validate((valid) => {
+        if (valid) {
+          alert("录入成功!");
+          // console.log(sizeForm);
+          //派发数据给vuex
+          store.dispatch("update", sizeForm);
+          // 返回展示页面
+          show.value = true;
+        } else {
+          console.log("录入失败,请检查");
+          return false;
+        }
+      });
     }
 
     return {
@@ -149,6 +189,8 @@ export default {
       show,
       onSubmit,
       sizeForm,
+      rules,
+      formRef,
       backHome,
       tableData,
     };

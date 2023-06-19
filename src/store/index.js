@@ -2,8 +2,9 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    message: [
+    data: [
       {
+        id: "0",
         name: "小红",
         age: "22",
         eBG: "本科",
@@ -11,6 +12,7 @@ export default createStore({
         wAge: "1",
       },
       {
+        id: "1",
         name: "小蓝",
         age: "23",
         eBG: "本科",
@@ -18,6 +20,7 @@ export default createStore({
         wAge: "1",
       },
       {
+        id: "2",
         name: "小绿",
         age: "33",
         eBG: "研究生",
@@ -25,6 +28,7 @@ export default createStore({
         wAge: "4",
       },
       {
+        id: "3",
         name: "小粉",
         age: "32",
         eBG: "研究生",
@@ -32,6 +36,7 @@ export default createStore({
         wAge: "5",
       },
       {
+        id: "4",
         name: "紫薇",
         age: "25",
         eBG: "大专",
@@ -43,24 +48,30 @@ export default createStore({
   getters: {},
   mutations: {
     ADD(state, value) {
-      state.message.push(value);
+      state.data.push(value);
     },
-    DEL(state, index) {
-      state.message.splice(index, 1);
+    DEL(state, id) {
+      state.data.splice(id, 1);
     },
-    UPDATE(state, { index, sizeForm }) {
-      Object.assign(state.message[index], sizeForm);
+    UPDATE(state, sizeForm) {
+      // 使用id作为唯一标识符在数据中定位。
+      // 如果找到匹配的对象则使用对象的解构语法更新匹配对象的属性
+      const index = state.data.findIndex((item) => item.id === sizeForm.id);
+      if (index !== -1) {
+        state.data[index] = { ...state.data[index], ...sizeForm };
+        // console.log("更新成功");
+      }
     },
   },
   actions: {
     add(context, value) {
       context.commit("ADD", value);
     },
-    del(context, index) {
-      context.commit("DEL", index);
+    del(context, id) {
+      context.commit("DEL", id);
     },
-    update(context, { index, sizeForm }) {
-      context.commit("UPDATE", { index, sizeForm });
+    update(context, sizeForm) {
+      context.commit("UPDATE", sizeForm);
     },
   },
   modules: {},

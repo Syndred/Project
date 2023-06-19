@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { nanoid } from "nanoid";
 // import store from '@/store';
 export default {
     data() {
@@ -49,19 +50,16 @@ export default {
                 return callback(new Error("年龄不能为空"));
             }
             setTimeout(() => {
-                if (!Number.isInteger(value)) {
-                    callback(new Error("请输入数字值"));
+                if (value < 16 || value > 80) {
+                    callback(new Error("年龄不符合规范"));
                 } else {
-                    if (value < 16 || value > 80) {
-                        callback(new Error("年龄不符合规范"));
-                    } else {
-                        callback();
-                    }
+                    callback();
                 }
             }, 500);
         };
         return {
             ruleForm: {
+                id: "",
                 name: "",
                 age: "",
                 eBG: "",
@@ -92,6 +90,8 @@ export default {
             this.$refs[ruleForm].validate((valid) => {
                 if (valid) {
                     alert("录入成功!");
+                    //添加id字段
+                    this.ruleForm.id = nanoid();
                     // console.log(this.ruleForm)
                     // 将数据添加到vuex中
                     this.$store.dispatch("add", this.ruleForm);
