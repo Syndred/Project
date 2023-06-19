@@ -16,7 +16,7 @@
             <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
         <el-form-item label="年龄" prop="age">
-            <el-input v-model.number="ruleForm.age"></el-input>
+            <el-input v-model="ruleForm.age"></el-input>
         </el-form-item>
         <el-form-item label="学历" prop="eBG">
             <el-select v-model="ruleForm.eBG" placeholder="请选择学历">
@@ -94,7 +94,9 @@ export default {
                     this.ruleForm.id = nanoid();
                     // console.log(this.ruleForm)
                     // 将数据添加到vuex中
+                    // console.log(this.ruleForm)
                     this.$store.dispatch("add", this.ruleForm);
+                    this.$router.push("/main");
                 } else {
                     console.log("录入失败,请检查");
                     return false;

@@ -86,7 +86,7 @@ const sizeForm = reactive({
 //初始化formRef
 const formRef = ref(null);
 //编辑规则
-const checkAge = (rule, value, callback) => {
+const checkAge = (rule,value, callback) => {
   if (!value) {
     return callback(new Error("年龄不能为空"));
   }
@@ -139,11 +139,9 @@ export default {
     });
     // 删除逻辑
     function handleDelete(row) {
-      // tableData.value.splice(index, 1);
       store.dispatch("del", row.id);
       // console.log(row)
     }
-
     //处理编辑业务
     //点击编辑按钮会将数据自动填写在更改框中
     function handleEdit(row) {
@@ -168,7 +166,7 @@ export default {
       //表单检验
       formRef.value.validate((valid) => {
         if (valid) {
-          alert("录入成功!");
+          alert("修改成功!");
           // console.log(sizeForm);
           //派发数据给vuex
           store.dispatch("update", sizeForm);
