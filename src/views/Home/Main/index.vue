@@ -1,28 +1,38 @@
 <template>
   <!-- <h1>{{ $store.state.message }}</h1> -->
-  <!-- 简历表格 -->
-  <el-table v-if="show" :data="filterTableData" style="width: 100%" height="400px" class="form">
-    <el-table-column prop="name" label="姓名" width="120" />
-    <el-table-column prop="age" label="年龄" width="120" />
-    <el-table-column prop="eBG" label="学历" width="120" />
-    <el-table-column prop="school" label="毕业院校" width="200" />
-    <el-table-column prop="wAge" label="工作年限" width="120" />
+  <el-card v-if="show">
+    <!-- 简历表格 -->
+    <el-table :data="pagedTableData" style="width: 100%" max-height="400px" class="form">
+      <el-table-column prop="name" label="姓名" width="120" />
+      <el-table-column prop="age" label="年龄" width="120" />
+      <el-table-column prop="eBG" label="学历" width="120" />
+      <el-table-column prop="school" label="毕业院校" width="200" />
+      <el-table-column prop="wAge" label="工作年限" width="120" />
 
-    <!-- 搜索框 -->
-    <el-table-column align="right">
-      <template #header>
-        <el-input v-model="search" placeholder="关键字搜索" style="width: 200px" />
-      </template>
+      <!-- 搜索框 -->
+      <el-table-column align="right">
+        <template #header>
+          <el-input v-model="search" placeholder="关键字搜索" style="width: 200px" />
+        </template>
 
-      <!-- 编辑和删除按钮 -->
-      <template #default="scope">
-        <el-button color="#336666" @click="handleEdit(scope.row)">
-          编辑
-        </el-button>
-        <el-button type="danger" @click="handleDelete(scope.row)">删除</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+        <!-- 编辑和删除按钮 -->
+        <template #default="scope">
+          <el-button color="#336666" @click="handleEdit(scope.row)">
+            编辑
+          </el-button>
+          <el-button type="danger" @click="handleDelete(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 分页功能 -->
+    <div class="block" style="display: flex; justify-content: center; margin-top: 20px">
+      <span class="total">共{{ filterTableData.length }}条</span>
+      <el-pagination :current-page="currentPage" :page-size="pageSize" @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" :total="filterTableData.length" layout="prev, pager, next">
+      </el-pagination>
+    </div>
+  </el-card>
 
   <!-- 修改页面展示 -->
   <el-form v-else-if="!show" :model="sizeForm" :rules="rules" ref="formRef" label-width="auto" class="demo-ruleForm">
@@ -86,7 +96,7 @@ const sizeForm = reactive({
 //初始化formRef
 const formRef = ref(null);
 //编辑规则
-const checkAge = (rule,value, callback) => {
+const checkAge = (rule, value, callback) => {
   if (!value) {
     return callback(new Error("年龄不能为空"));
   }
@@ -179,6 +189,26 @@ export default {
       });
     }
 
+    //分页逻辑
+    const currentPage = ref(1); // 当前页码
+    const pageSize = ref(7); // 每页显示数量
+    // 计算属性：根据当前页和每页显示数量来计算要显示的数据段
+    const pagedTableData = computed(() => {
+      const startIndex = (currentPage.value - 1) * pageSize.value;
+      const endIndex = startIndex + pageSize.value;
+      return filterTableData.value.slice(startIndex, endIndex);
+    });
+    // 方法：处理分页大小变化
+    const handleSizeChange = (val) => {
+      pageSize.value = val;
+      currentPage.value = 1; // 重置当前页码为第一页
+    };
+    // 方法：处理当前页码变化
+    const handleCurrentChange = (val) => {
+      currentPage.value = val;
+    };
+
+
     return {
       search: search,
       handleEdit,
@@ -191,6 +221,11 @@ export default {
       formRef,
       backHome,
       tableData,
+      currentPage,
+      pageSize,
+      handleSizeChange,
+      handleCurrentChange,
+      pagedTableData,
     };
   },
 };
@@ -200,5 +235,12 @@ export default {
 .form {
   border: 3px solid #336666;
   border-radius: 10px;
+}
+
+.total {
+  display: flex;
+  font-size: smaller;
+  align-items: center;
+  color: #afb0b3;
 }
 </style>
