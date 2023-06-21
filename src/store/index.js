@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import axios from "axios";
 
 export default createStore({
   state: {
@@ -47,6 +48,10 @@ export default createStore({
   },
   getters: {},
   mutations: {
+    Find(state, data) {
+      state.data = data;
+      console.log(state.data);
+    },
     ADD(state, value) {
       state.data.push(value);
     },
@@ -64,12 +69,34 @@ export default createStore({
     },
   },
   actions: {
+    async fetchData({ commit }) {
+      try {
+        const response = await axios.get(
+          "http://192.168.1.105:8080/api/selectAll"
+        );
+        console.log(response.message);
+        commit("Find", response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     add(context, value) {
       context.commit("ADD", value);
     },
+
     del(context, id) {
+      axios
+        .post(`http://192.168.1.105:8080/api/deleteOne/${id}`)
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
       context.commit("DEL", id);
     },
+
     update(context, sizeForm) {
       context.commit("UPDATE", sizeForm);
     },

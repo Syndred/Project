@@ -126,6 +126,7 @@ const rules = reactive({
   wAge: [{ required: true, message: "请输入工作年限", trigger: "blur" }],
 });
 
+import { onMounted } from "vue";
 export default {
   name: "Table",
   setup() {
@@ -208,6 +209,9 @@ export default {
       currentPage.value = val;
     };
 
+    onMounted(() => {
+      store.dispatch("fetchData");
+    });
 
     return {
       search: search,
