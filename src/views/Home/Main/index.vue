@@ -133,7 +133,7 @@ export default {
     // 使用vuex仓库
     const store = useStore();
     // 拿取数据并保存到tableData中
-    var tableData = ref(store.state.data);
+    var tableData = ref(store.state.Resume.data);
     // var tableData = ref($store.state.message)
     // 搜索逻辑
     var filterTableData = computed(function () {
@@ -209,9 +209,9 @@ export default {
       currentPage.value = val;
     };
 
-    onMounted(() => {
-      store.dispatch("fetchData");
-    });
+    // onMounted(() => {
+    //   store.dispatch("fetchData");
+    // });
 
     return {
       search: search,
