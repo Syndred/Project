@@ -239,7 +239,7 @@ export default {
 
 <style scoped>
 .form {
-  border: 3px solid #336666;
+  /* border: 3px solid #336666; */
   border-radius: 10px;
 }
 
