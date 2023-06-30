@@ -1,15 +1,4 @@
 <template>
-    <!-- 上传与识别简历 -->
-    <el-upload class="upload-demo" drag action="http://192.168.43.202:8080/api/upload" multiple>
-        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-        <div class="el-upload__text">拖拽上传或<em>选择文件</em></div>
-        <template #tip>
-            <div class="el-upload__tip">支持DOCX、JPEG/PNG图片格式简历录入</div>
-        </template>
-    </el-upload>
-
-    <br />
-
     <!-- 录入简历结构 -->
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="姓名" prop="name">
@@ -34,7 +23,7 @@
         </el-form-item>
         <!-- 底部按钮 -->
         <el-form-item>
-            <el-button color="#336666" type="primary" plain @click="submitForm('ruleForm')">录入</el-button>
+            <el-button color="#336666" type="primary" @click="submitForm('ruleForm')">录入</el-button>
             <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
     </el-form>
@@ -42,7 +31,6 @@
 
 <script>
 import { nanoid } from "nanoid";
-import { ElNotification } from "element-plus";
 // import store from '@/store';
 export default {
     data() {
@@ -90,21 +78,20 @@ export default {
         submitForm(ruleForm) {
             this.$refs[ruleForm].validate((valid) => {
                 if (valid) {
-                    // 添加id字段
+                    alert("录入成功!");
+                    //添加id字段
                     this.ruleForm.id = nanoid();
+                    // console.log(this.ruleForm)
                     // 将数据添加到vuex中
+                    // console.log(this.ruleForm)
                     this.$store.dispatch("add", this.ruleForm);
-                    ElNotification.success({
-                        title: "录入成功",
-                        offset: 100,
-                    });
+                    this.$router.push("/main");
                 } else {
                     console.log("录入失败,请检查");
                     return false;
                 }
             });
         },
-
         // 重置功能
         resetForm(ruleForm) {
             this.$refs[ruleForm].resetFields();

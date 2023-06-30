@@ -70,7 +70,7 @@
       </el-radio-group>
     </el-form-item> -->
     <el-form-item>
-      <el-button color="#336666" type="primary" @click="onSubmit()">保存</el-button>
+      <el-button color="#336666" type="primary" plain @click="onSubmit()">保存</el-button>
       <el-button @click="backHome">取消</el-button>
     </el-form-item>
   </el-form>
@@ -79,7 +79,7 @@
 <script>
 import { useStore } from "vuex";
 import { computed, ref, reactive } from "vue";
-
+import { ElNotification } from "element-plus";
 // 搜索框初始化
 var search = ref("");
 
@@ -126,14 +126,15 @@ const rules = reactive({
   wAge: [{ required: true, message: "请输入工作年限", trigger: "blur" }],
 });
 
-import { onMounted } from "vue";
 export default {
   name: "Table",
   setup() {
     // 使用vuex仓库
     const store = useStore();
+    //向vuex中派发信息通知其向服务器请求数据
+    store.dispatch("fetchData");
     // 拿取数据并保存到tableData中
-    var tableData = ref(store.state.Resume.data);
+    var tableData = computed(() => store.state.Resume.data);
     // var tableData = ref($store.state.message)
     // 搜索逻辑
     var filterTableData = computed(function () {
@@ -177,10 +178,15 @@ export default {
       //表单检验
       formRef.value.validate((valid) => {
         if (valid) {
-          alert("修改成功!");
+          // alert("修改成功!");
           // console.log(sizeForm);
           //派发数据给vuex
           store.dispatch("update", sizeForm);
+          //弹出提示框
+          ElNotification.success({
+            title: "修改成功",
+            offset: 100,
+          });
           // 返回展示页面
           show.value = true;
         } else {
@@ -208,10 +214,6 @@ export default {
     const handleCurrentChange = (val) => {
       currentPage.value = val;
     };
-
-    // onMounted(() => {
-    //   store.dispatch("fetchData");
-    // });
 
     return {
       search: search,
@@ -246,5 +248,9 @@ export default {
   font-size: smaller;
   align-items: center;
   color: #afb0b3;
+}
+
+.example-showcase .el-loading-mask {
+  z-index: 9;
 }
 </style>

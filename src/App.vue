@@ -76,10 +76,11 @@
         <el-container>
           <el-header>
             <el-menu :default-active="$route.path" :router="true" class="el-menu-demo" mode="horizontal"
-              background-color="#336666" text-color="#fff" active-text-color="#80FFFF" @select="handleSelect">
-              <el-menu-item index="/main" @click="toMain">简历信息</el-menu-item>
-              <el-menu-item index="/enter" @click="toEnter">简历录入</el-menu-item>
-              <el-menu-item index="4">岗位录入</el-menu-item>
+              background-color="#336666" text-color="#fff" active-text-color="#80FFFF">
+              <el-menu-item index="/main">简历信息</el-menu-item>
+              <el-menu-item index="/enter" >简历录入</el-menu-item>
+              <el-menu-item index="/penter">岗位录入</el-menu-item>
+              <el-menu-item index="/pmsg">岗位信息</el-menu-item>
               <el-sub-menu index="2">
                 <template #title>岗位信息</template>
                 <el-menu-item index="2-1">会计</el-menu-item>
@@ -104,29 +105,24 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
+
 
 export default {
   setup() {
-    const router = useRouter();
 
-    const handleSelect = (key, keyPath) => {
-      console.log(key, keyPath);
-    };
-    const handleOpen = (key, keyPath) => {
-      console.log(key, keyPath);
-    };
-    const handleClose = (key, keyPath) => {
-      console.log(key, keyPath);
-    };
-    const toMain = () => {
-      router.push("/main");
-    };
-    const toEnter = () => {
-      router.push("/enter");
-    };
+    // const handleSelect = (key, keyPath) => {
+    //   console.log(key, keyPath);
+    // };
+    // const handleOpen = (key, keyPath) => {
+    //   console.log(key, keyPath);
+    // };
+    // const handleClose = (key, keyPath) => {
+    //   console.log(key, keyPath);
+    // };
 
-    return { handleSelect, handleOpen, handleClose, toMain, toEnter };
+ 
+
+    // return { handleSelect, handleOpen, handleClose, };
   },
 };
 </script>
