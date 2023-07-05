@@ -1,6 +1,6 @@
 <template>
     <!-- 上传与识别简历 -->
-    <el-upload class="upload-demo" drag action="http://192.168.43.202:8080/api/upload" multiple>
+    <el-upload class="upload-demo" action="http://192.168.1.107:8080/api/upload" :on-success="handleSuccess" drag multiple>
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
         <div class="el-upload__text">拖拽上传或<em>选择文件</em></div>
         <template #tip>
@@ -31,6 +31,9 @@
         </el-form-item>
         <el-form-item label="工作年限" prop="wAge">
             <el-input v-model="ruleForm.wAge"></el-input>
+        </el-form-item>
+        <el-form-item label="求职目标" prop="jobName">
+            <el-input v-model="ruleForm.jobName"></el-input>
         </el-form-item>
         <!-- 底部按钮 -->
         <el-form-item>
@@ -66,6 +69,7 @@ export default {
                 eBG: "",
                 school: "",
                 wAge: "",
+                jobName: "",
             },
             rules: {
                 name: [
@@ -82,6 +86,9 @@ export default {
                     },
                 ],
                 wAge: [{ required: true, message: "请输入工作年限", trigger: "blur" }],
+                jobName: [
+                    { required: true, message: "请输入求职目标", trigger: "blur" },
+                ],
             },
         };
     },
@@ -93,16 +100,28 @@ export default {
                     // 添加id字段
                     this.ruleForm.id = nanoid();
                     // 将数据添加到vuex中
-                    this.$store.dispatch("add", this.ruleForm);
+                    this.$store.dispatch("Resume/add", this.ruleForm);
                     ElNotification.success({
                         title: "录入成功",
                         offset: 100,
                     });
                 } else {
-                    console.log("录入失败,请检查");
+                    alert("录入失败,请检查");
                     return false;
                 }
             });
+        },
+
+        //上传简历拿到后端返回数据
+        handleSuccess(response, file, fileList) {
+            // 在这里拿到后端处理完的返回结果
+            console.log(response);
+            this.ruleForm.name = response.name
+            this.ruleForm.age = response.age
+            this.ruleForm.eBG = response.eBG
+            this.ruleForm.school = response.school
+            this.ruleForm.wAge = response.wAge
+            this.ruleForm.jobName = response.jobName
         },
 
         // 重置功能

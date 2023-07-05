@@ -4,7 +4,8 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       "/api": {
-        target: "http://gmall-h5-api.atguigu.cn",
+        // target: "https://f95b-113-118-80-159.ngrok-free.app",
+        target: " http://192.168.1.107:8080",
       },
     },
   },

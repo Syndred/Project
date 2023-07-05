@@ -1,6 +1,7 @@
 //简历信息小仓库
-import axios from "axios";
+import { reqInserOne, reqSelectAll, reqDeleteOne, reqUpdateOne } from "@/api";
 export default {
+  namespaced: true, // 开启命名空间
   state() {
     return {
       data: [
@@ -11,6 +12,7 @@ export default {
         //   eBG: "本科",
         //   school: "广东技术师范大学",
         //   wAge: "1",
+        //   jobName: "当狗的司机",
         // },
         // {
         //   id: "1",
@@ -19,6 +21,7 @@ export default {
         //   eBG: "本科",
         //   school: "香港中文大学",
         //   wAge: "1",
+        //   jobName: "飞行员",
         // },
         // {
         //   id: "2",
@@ -27,6 +30,7 @@ export default {
         //   eBG: "研究生",
         //   school: "深圳大学",
         //   wAge: "4",
+        //   jobName: "程序员",
         // },
         // {
         //   id: "3",
@@ -35,6 +39,7 @@ export default {
         //   eBG: "研究生",
         //   school: "厦门大学",
         //   wAge: "5",
+        //   jobName: "厨师",
         // },
         // {
         //   id: "4",
@@ -43,6 +48,7 @@ export default {
         //   eBG: "大专",
         //   school: "深圳信息职业技术学院",
         //   wAge: "1",
+        //   jobName: "老师",
         // },
       ],
     };
@@ -74,57 +80,50 @@ export default {
   actions: {
     async fetchData({ commit }) {
       try {
-        const response = await axios.get(
-          "http://192.168.43.202:8080/api/selectAll"
-        );
-        // console.log(response.message);
-        commit("Find", response.data);
+        const res = await reqSelectAll(); // 等待reqSelectAll函数执行并获取返回结果
+        // console.log(res)
+        commit("Find", res.data);
       } catch (error) {
         console.error(error);
       }
     },
 
     add(context, data) {
-      axios
-        .post("http://192.168.43.202:8080/api/insertOne", data)
-        .then(function (response) {
-          if (response.status == 200) {
-            context.commit("ADD", data);
+       context.commit("ADD", data);
+      reqInserOne(data)
+        .then((res) => {
+          if (res.status == 200) {
+            // context.commit("ADD", data);
           }
         })
-        .catch(function (error) {
-          console.log(error);
+        .catch((error) => {
+          console.log(error); // 这里捕获到的是错误对象
         });
     },
 
     del(context, id) {
-      axios
-        .post(`http://192.168.43.202:8080/api/deleteOne/${id}`)
-        .then(function (response) {
-          // console.log(response);
-          if (response.status == 200) {
+      reqDeleteOne(id)
+        .then((res) => {
+          if (res.status == 200) {
             context.commit("DEL", id);
           }
         })
-        .catch(function (error) {
-          console.log(error);
+        .catch((error) => {
+          console.log(error); // 这里捕获到的是错误对象
         });
     },
-
     update(context, data) {
       // context.commit("UPDATE", sizeForm);
       // console.log(data)
       // console.log(data.id)
-      axios
-        .post(`http://192.168.43.202:8080/api/updateOne/${data.id}`, data)
-        .then(function (response) {
-          // console.log(response);
-          if (response.status == 200) {
+      reqUpdateOne(data.id, data)
+        .then((res) => {
+          if (res.status == 200) {
             context.commit("UPDATE", data);
           }
         })
-        .catch(function (error) {
-          console.log(error);
+        .catch((error) => {
+          console.log(error); // 这里捕获到的是错误对象
         });
     },
   },

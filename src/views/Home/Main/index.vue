@@ -5,9 +5,10 @@
     <el-table :data="pagedTableData" style="width: 100%" max-height="400px" class="form">
       <el-table-column prop="name" label="姓名" width="120" />
       <el-table-column prop="age" label="年龄" width="120" />
-      <el-table-column prop="eBG" label="学历" width="120" />
-      <el-table-column prop="school" label="毕业院校" width="200" />
+      <el-table-column prop="eBG" label="学历" width="120" /> 
       <el-table-column prop="wAge" label="工作年限" width="120" />
+      <el-table-column prop="school" label="毕业院校" width="200" />
+      <el-table-column prop="jobName" label="求职目标" width="200" />
 
       <!-- 搜索框 -->
       <el-table-column align="right">
@@ -56,6 +57,9 @@
     <el-form-item label="工作年限" prop="wAge">
       <el-input v-model="sizeForm.wAge" />
     </el-form-item>
+    <el-form-item label="求职目标" prop="jobName">
+      <el-input v-model="sizeForm.jobName" />
+    </el-form-item>
 
     <!-- <el-form-item label="是否实习生">
       <el-select v-model="sizeForm.region" placeholder="选择">
@@ -91,6 +95,7 @@ const sizeForm = reactive({
   eBG: "",
   school: "",
   wAge: "",
+  jobName: ""
 });
 
 //初始化formRef
@@ -124,6 +129,7 @@ const rules = reactive({
     },
   ],
   wAge: [{ required: true, message: "请输入工作年限", trigger: "blur" }],
+  jobName: [{ required: true, message: "请输入求职信息", trigger: "blur" }],
 });
 
 export default {
@@ -132,7 +138,7 @@ export default {
     // 使用vuex仓库
     const store = useStore();
     //向vuex中派发信息通知其向服务器请求数据
-    store.dispatch("fetchData");
+    store.dispatch("Resume/fetchData");
     // 拿取数据并保存到tableData中
     var tableData = computed(() => store.state.Resume.data);
     // var tableData = ref($store.state.message)
@@ -145,7 +151,8 @@ export default {
           data.age.includes(search.value) ||
           data.eBG.includes(search.value) ||
           data.school.includes(search.value) ||
-          data.wAge.includes(search.value)
+          data.wAge.includes(search.value)||
+          data.jobName.includes(search.value)
         );
       });
     });
@@ -165,6 +172,7 @@ export default {
       this.sizeForm.eBG = row.eBG;
       this.sizeForm.school = row.school;
       this.sizeForm.wAge = row.wAge;
+      this.sizeForm.jobName = row.jobName;
       //  console.log(this.sizeForm)
     }
     //点击取消时跳转回首页
