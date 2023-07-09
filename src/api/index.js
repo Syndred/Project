@@ -20,3 +20,7 @@ export const reqUpdateOne = (id,data) =>
 //增加岗位信息请求
 export const reqInsertPost = (data) =>
   requests({ url: "/insertPost", method: "post", data });
+
+// 查找岗位匹配
+export const reqMatchingPost = (data) =>
+  requests({ url: `/searchJob/${data}`, method: "get" });

@@ -8,8 +8,7 @@
           <h2 class="name">蓝云简历</h2>
         </div>
           <el-menu-item index="/main">简历信息</el-menu-item>
-          <el-menu-item index="/enter">简历录入</el-menu-item>
-          <el-menu-item index="/penter">岗位录入</el-menu-item>
+          <el-menu-item index="/enter">信息录入</el-menu-item>
           <el-menu-item index="/pmsg">岗位信息</el-menu-item>
         </el-menu>
       </el-header>
@@ -74,6 +73,6 @@ export default {
   padding: 0 3rem;
   background-color: rgb(255, 255, 255);
   justify-content: flex-end;
-  padding-right: 40vh;
+  padding-right: 48vh;
 }
 </style>
