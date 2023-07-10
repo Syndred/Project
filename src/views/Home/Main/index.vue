@@ -86,7 +86,7 @@
         <!-- 返回图标 -->
         <el-row>
           <el-col style="margin-bottom: 10px">
-            <el-icon :size="40" color="grey" style="cursor: pointer;">
+            <el-icon :size="40" color="#9aa7b1" style="cursor: pointer;">
               <Back @click="backHome" />
             </el-icon>
           </el-col>

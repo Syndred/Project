@@ -2,11 +2,18 @@
   <div class="common-layout">
     <el-container>
       <el-header>
-        <el-menu :default-active="$route.path" :router="true" class="el-menu-demo" mode="horizontal" text-color="#6b7c93"
-          active-text-color="#717ac8">        <div class="logo">
-          <img src="@/assets/cloud.png" alt="">
-          <h2 class="name">蓝云简历</h2>
-        </div>
+        <el-menu
+          :default-active="$route.path"
+          :router="true"
+          class="el-menu-demo"
+          mode="horizontal"
+          text-color="#6b7c93"
+          active-text-color="#717ac8"
+        >
+          <div class="logo" @click="toIndex">
+            <img src="@/assets/cloud.png" alt="" />
+            <h2 class="name">蓝云简历</h2>
+          </div>
           <el-menu-item index="/main">简历信息</el-menu-item>
           <el-menu-item index="/enter">信息录入</el-menu-item>
           <el-menu-item index="/pmsg">岗位信息</el-menu-item>
@@ -20,10 +27,18 @@
 </template>
 
 <script>
+import router from './router';
+
 export default {
   setup() {
-    // ...
+    const toIndex=() => {
+      router.push('/')
+    }
+    return {
+      toIndex
+    }
   },
+
 };
 </script>
 
@@ -54,6 +69,7 @@ export default {
   display: flex;
   align-items: center;
   margin-right: 50vh;
+  cursor: pointer;
 }
 /* logo盒子图片样式 */
 .logo img {
@@ -63,7 +79,7 @@ export default {
   margin-right: 10px;
 }
 /* logo盒子文字样式 */
-.name{
+.name {
   /* 不知道为什么不能用字体 离谱 */
   /* font-family: Verdana, "myfont"; */
   font-style: italic;

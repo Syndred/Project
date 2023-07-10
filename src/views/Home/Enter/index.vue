@@ -30,10 +30,10 @@
                     </el-form-item>
                     <el-form-item label="学历" prop="eBG">
                         <el-select v-model="ruleForm.eBG" placeholder="请选择学历">
-                            <el-option label="大专" value="大专"></el-option>
+                            <el-option label="大专及以下" value="大专及以下"></el-option>
                             <el-option label="本科" value="本科"></el-option>
                             <el-option label="研究生" value="研究生"></el-option>
-                            <el-option label="博士" value="博士"></el-option>
+                            <el-option label="博士及以上" value="博士及以上"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="毕业院校" prop="school">
