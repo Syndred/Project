@@ -1,5 +1,5 @@
 <template>
-    <!-- 学历饼状图 -->
+    <!-- 工作年限饼状图 -->
     <div ref="chart" class="cookie"></div>
 </template>
 
@@ -10,39 +10,49 @@ import { ref, reactive, onMounted } from "vue";
 const chart = ref();//创建dom引用
 // 指定图表的配置项和数据
 const option = reactive({
-    grid: {
-        containLabel: true
-    },
     title: {
-        text: '学历分布',
+        text: '工作年限',
         left: 'center',
         bottom: "80%"
+    },
+    tooltip: {
+        trigger: 'item'
     },
     legend: {
         top: '20%',
         left: 'center'
     },
-    tooltip: {
-        trigger: 'item'
-    },
     series: [
         {
             type: 'pie',
-            radius: '50%',
-            data: [
-                { value: 66, name: '大专' },
-                { value: 95, name: '本科' },
-                { value: 58, name: '研究生' },
-                { value: 24, name: '博士' },
-                { value: 41, name: '其他' },
-            ],
+            radius: ['50%', '30%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+                borderRadius: 10,
+                borderColor: '#fff',
+                borderWidth: 1
+            },
+            label: {
+                show: false,
+                position: 'center'
+            },
             emphasis: {
-                itemStyle: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                label: {
+                    show: true,
+                    fontSize: 20,
+                    fontWeight: 'bold'
                 }
-            }
+            },
+            labelLine: {
+                show: false
+            },
+            data: [
+                { value: 104, name: '0年' },
+                { value: 73, name: '1-2年' },
+                { value: 58, name: '3-5年' },
+                { value: 48, name: '6-10年' },
+                { value: 30, name: '10年以上' }
+            ]
         }
     ]
 });

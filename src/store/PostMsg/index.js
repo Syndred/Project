@@ -37,15 +37,13 @@ export default {
   },
   getters: {},
   mutations: {
-    // Find(state, data) {
-    //   state.data = data;
-    // },
+    //岗位信息录入
     ADD(state, value) {
       state.data.push(value);
     },
     MPOST(state, value) {
-      state.Mdata=value
-    }
+      state.Mdata = value;
+    },
     // DEL(state, id) {
     //   const index = state.data.findIndex((item) => item.id === id); // 找到指定id的对象在数组中的索引
     //   if (index !== -1) {
@@ -99,7 +97,7 @@ export default {
       reqMatchingPost(data)
         .then((res) => {
           if (res.status == 200) {
-            context.commit("MPOST",res.data);
+            context.commit("MPOST", res.data);
           }
         })
         .catch((error) => {

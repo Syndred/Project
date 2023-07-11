@@ -47,11 +47,6 @@ export default {
   margin: 0;
   padding: 0;
 }
-/* 引用字体 */
-@font-face {
-  font-family: "myfont";
-  src: url("@/assets/font1.woff") format("woff");
-}
 /* header下面的整体样式 */
 .el-main {
   background-color: #ffffff;
@@ -80,15 +75,12 @@ export default {
 }
 /* logo盒子文字样式 */
 .name {
-  /* 不知道为什么不能用字体 离谱 */
-  /* font-family: Verdana, "myfont"; */
   font-style: italic;
   color: rgb(83, 105, 215);
 }
 .el-menu-demo {
-  padding: 0 3rem;
+
   background-color: rgb(255, 255, 255);
-  justify-content: flex-end;
-  padding-right: 48vh;
+justify-content: center;
 }
 </style>

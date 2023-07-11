@@ -141,8 +141,8 @@
             </el-card>
         </el-col>
         <el-col :span="6">
-        <span class="font-active">原数据</span>
-        <el-card class="compare"></el-card>
+            <span class="font-active">原数据</span>
+            <el-card class="compare"></el-card>
         </el-col>
     </el-row>
 </template>
@@ -299,7 +299,7 @@ export default {
 }
 
 /* 对照盒子 */
-.compare{
+.compare {
     height: 39.2rem;
     background-color: #f7faff;
     /* margin-top: 2rem; */
@@ -317,6 +317,4 @@ export default {
     text-align: center;
     background-color: #ffffff;
 }
-
-
 </style>

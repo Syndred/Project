@@ -89,7 +89,7 @@ export default {
     },
 
     add(context, data) {
-       context.commit("ADD", data);
+      context.commit("ADD", data);
       reqInserOne(data)
         .then((res) => {
           if (res.status == 200) {

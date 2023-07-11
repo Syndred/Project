@@ -14,9 +14,9 @@ export const reqDeleteOne = (id) =>
   requests({ url: `/deleteOne/${id}`, method: "post" });
 
 //修改简历信息请求
-export const reqUpdateOne = (id,data) =>
-    requests({ url: `/updateOne/${id}`, method: "post", data });
-  
+export const reqUpdateOne = (id, data) =>
+  requests({ url: `/updateOne/${id}`, method: "post", data });
+
 //增加岗位信息请求
 export const reqInsertPost = (data) =>
   requests({ url: "/insertPost", method: "post", data });
