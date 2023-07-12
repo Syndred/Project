@@ -225,8 +225,6 @@ export default {
   setup() {
     // 使用vuex仓库
     const store = useStore();
-    //向vuex中派发信息通知其向服务器请求数据
-    store.dispatch("Resume/fetchData");
     // 拿取数据并保存到tableData中
     var tableData = computed(() => store.state.Resume.data);
     // var tableData = ref($store.state.message)
@@ -246,7 +244,7 @@ export default {
     });
     // 删除逻辑
     function handleDelete(row) {
-      store.dispatch("del", row.id);
+      store.dispatch("Resume/del", row.id);
       // console.log(row)
     }
     // 切换解析页面
@@ -281,7 +279,7 @@ export default {
           // alert("修改成功!");
           // console.log(sizeForm);
           //派发数据给vuex
-          store.dispatch("update", sizeForm);
+          store.dispatch("Resume/update", sizeForm);
           //弹出提示框
           ElNotification.success({
             title: "修改成功",

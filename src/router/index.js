@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Index from "@/views/Home";
-import Main from "@/views/Home/Main";
+import Rmsg from "@/views/Home/Rmsg";
 import Enter from "@/views/Home/Enter";
-import Pmsg from "@/views/Home/Pmsg";
+import Pmatch from "@/views/Home/Pmatch";
 const routes = [
   {
     path: "/",
@@ -10,9 +10,9 @@ const routes = [
     component: Index,
   },
   {
-    path: "/main",
-    name: "main",
-    component: Main,
+    path: "/rmsg",
+    name: "rmsg",
+    component: Rmsg,
   },
   {
     path: "/enter",
@@ -20,9 +20,9 @@ const routes = [
     component: Enter,
   },
   {
-    path: "/pmsg",
-    name: "pmsg",
-    component: Pmsg,
+    path: "/pmatch",
+    name: "pmatch",
+    component: Pmatch,
   },
 ];
 

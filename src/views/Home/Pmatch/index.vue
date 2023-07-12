@@ -1,5 +1,5 @@
 <template>
-  <el-row style="margin-top: 50px" :gutter="40">
+  <el-row style="margin-top: 20px" :gutter="40">
     <el-col :span="24">
       <div class="grid-content ep-bg-purple-dark head">
         <h2 class="headmsg">岗位信息与匹配</h2>
@@ -9,7 +9,8 @@
       <div class="grid-content ep-bg-purple">
         <el-card v-if="showCard">
           <p class="font">岗位名称</p>
-          <el-select v-model="value" clearable filterable placeholder="请选择" class="select" @change="handleSelectChange">
+          <el-select v-model="value" clearable filterable placeholder="请选择" class="select" @change="handleSelectChange"
+            @clear="handleClear">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
           <p class="font">岗位描述</p>
@@ -25,18 +26,26 @@
             <el-button color="#6378b6" type="primary" @click="toggleBox">简历匹配</el-button></el-row>
         </el-card>
         <el-card v-if="!showCard">
-          <el-form :model="options" :rules="rules" ref="formRef">
-            <el-form-item prop="label">
+          <!-- 设置返回 -->
+          <div class="back" @click="back">
+            <el-icon :size="20">
+              <ArrowLeft />
+            </el-icon>
+            <span>Back</span>
+          </div>
+          <el-form :model="options">
+            <el-form-item>
               <p class="editfont">岗位名称</p>
-              <el-input v-model="label" clearable placeholder="请输入岗位名称" class="select"></el-input>
+              <el-input v-model="label" placeholder="请输入岗位名称" class="select"></el-input>
             </el-form-item>
-            <el-form-item prop="value">
+            <el-form-item>
               <p class="editfont">岗位描述</p>
-              <el-input type="textarea" :autosize="{ minRows: 17 }" v-model="value" placeholder="请输入岗位描述"></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 15.5, maxRows: 4 }" v-model="Fvalue"
+                placeholder="请输入岗位描述"></el-input>
             </el-form-item>
             <el-row class="btn">
-              <el-button color="#6378b6" type="primary" plain @click="submitForm">保存修改</el-button>
-              
+              <el-button color="#6378b6" type="primary" @click="submitForm">保存修改</el-button>
+              <el-button type="danger" @click="delPost">删除岗位</el-button>
             </el-row>
           </el-form>
         </el-card>
@@ -72,40 +81,38 @@
 
 <script>
 import { useStore } from "vuex";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, } from "vue";
 
 export default {
-  name: "Pmsg",
+  name: "Pmatch",
   setup() {
     // 使用vuex仓库
     const store = useStore();
-    // 拿取简历仓库数据并保存到ResumeMsg中
-    const ResumeMsg = reactive(store.state.Resume.data);
-    // const ResumeMsg = reactive(store.state.PostMsg.Mdata);
-
-    // console.log(ResumeMsg)
-    // 拿取岗位仓库数据并保存到options中
-    const options = reactive(store.state.PostMsg.data);
+    // 拿取数据并保存
+    let ResumeMsg = computed(() => store.state.Resume.data);
+    let options = computed(() => store.state.PostMsg.data);
     const value = ref("");
+    // 修改页面绑定的value值
+    const Fvalue = ref("");
     const label = ref("");
+    const id = ref("");
     const showBox = ref(false);
     function toggleBox() {
       showBox.value = !showBox.value;
     }
     // 监听选项改变获取label值
     function handleSelectChange(value) {
-      const selectedOption = options.find((item) => item.value === value);
+      const selectedOption = options.value.find((item) => item.value === value);
       if (selectedOption) {
         label.value = selectedOption.label;
-        // store.dispatch("PostMsg/matchingPost",label.value);
-        // console.log(label.value)
-        //console.log(value)
+        id.value = selectedOption.id;
+        // console.log(id.value)
       }
     }
-  
+
     // 使用名字匹配过滤简历
     const resumeFilter = computed(() => {
-      return ResumeMsg.filter(function (data) {
+      return ResumeMsg.value.filter(function (data) {
         return (
           !label.value ||
           label.value === "" ||
@@ -113,6 +120,10 @@ export default {
         );
       });
     });
+    // 清除筛选
+    const handleClear = () => {
+      label.value = ""
+    }
     // 设置评分
     const ratevalue = ref(4)
     //初始化修改简历页面
@@ -120,30 +131,37 @@ export default {
     // 简历修改按钮
     const changePost = () => {
       showCard.value = false
+      showBox.value = false;
+      Fvalue.value = value.value
     }
-    // 简历修改表单
-    const rules = {
-      jobName: [
-        { required: true, message: '请输入岗位名称', trigger: 'blur' }
-      ],
-      jobDescription: [
-        { required: true, message: '请输入岗位描述', trigger: 'blur' }
-      ]
-    };
-
-    const formRef = ref(null);
-
+    // 提交岗位修改
     const submitForm = () => {
-      formRef.value.validate(valid => {
-        if (valid) {
-          // 表单验证通过，执行提交操作
-          showCard.value = true
-          // console.log('提交表单', form.value);
-        }
-      });
+      // 表单验证通过，执行提交操作
+      const formData = {
+        label: label.value,
+        id: id.value,
+        value: Fvalue.value
+      };
+      console.log('提交表单', formData);
+      if (formData.label == "" || formData.value == "") {
+        alert("请输入")
+      }
+      store.dispatch('PostMsg/update', formData)
+      showCard.value = true
+      value.value = ""
+      label.value=""
     };
 
-    
+    // 删除岗位信息
+    const delPost = () => {
+      store.dispatch('PostMsg/del', id.value)
+    };
+    // 返回逻辑
+    const back = () => {
+      showCard.value = true
+    };
+
+
     return {
       value,
       label,
@@ -154,11 +172,14 @@ export default {
       resumeFilter,
       ratevalue,
       showCard,
-      rules,
-      formRef,
       submitForm,
       changePost,
-      handleSelectChange
+      handleSelectChange,
+      delPost,
+      handleClear,
+      back,
+      Fvalue,
+      id
     };
   },
 };
@@ -198,6 +219,16 @@ export default {
 .card {
   background-color: #ffffff;
   border: solid 1px #e0eaf1;
+}
+
+/* 返回按钮 */
+.back {
+  display: flex;
+  justify-content: start;
+  color: #b4b4cc;
+  font-style: italic;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .btn {

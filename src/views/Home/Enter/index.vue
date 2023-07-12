@@ -1,5 +1,5 @@
 <template>
-    <el-row v-if="show === 1" class="row" justify="center" style="margin-top: 8vh">
+    <el-row v-if="show === 1" class="row" justify="center" style="margin-top: 8vh" :gutter="40">
         <!-- 简历信息录入显示 -->
         <el-col :span="8">
             <span class="font-active">简历信息录入</span>
@@ -7,9 +7,9 @@
                 <Switch />
             </el-icon>
             <span class="font" @click="changePost">岗位信息录入</span>
-            <el-card>
+            <el-card style="height: 40rem;">
                 <!-- 上传与识别简历 -->
-                <el-upload class="upload-demo" action="http://192.168.1.107:8080/api/upload" :on-success="handleSuccess"
+                <el-upload class="upload-demo" action="http://10.200.62.119:8080/api/testLoad" :on-success="handleSuccess"
                     drag multiple>
                     <el-icon class="el-icon--upload"><upload-filled /></el-icon>
                     <div class="el-upload__text">拖拽上传或<em>选择文件</em></div>
@@ -30,10 +30,11 @@
                     </el-form-item>
                     <el-form-item label="学历" prop="eBG">
                         <el-select v-model="ruleForm.eBG" placeholder="请选择学历">
-                            <el-option label="大专及以下" value="大专及以下"></el-option>
+                            <el-option label="大专" value="大专"></el-option>
                             <el-option label="本科" value="本科"></el-option>
                             <el-option label="研究生" value="研究生"></el-option>
-                            <el-option label="博士及以上" value="博士及以上"></el-option>
+                            <el-option label="博士" value="博士"></el-option>
+                            <el-option label="其他" value="其他"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="毕业院校" prop="school">
@@ -50,18 +51,29 @@
                         <el-button color="#6378b6" type="primary" plain @click="submitForm('ruleForm')">录入</el-button>
                         <el-button @click="resetForm('ruleForm')">重置</el-button>
                     </el-form-item>
+                    <span @click="compare" class="tip" v-show="showTip">查看识别结果？</span>
                 </el-form>
             </el-card>
         </el-col>
+        <!-- 原数据对照显示 -->
+        <el-col :span="6" class="transition-box" v-show="uploaded">
+            <span class="font-active">识别结果</span>
+            <el-card class="compare">
+                <el-scrollbar height="39rem">
+                        <pre class="backend-data">{{ rawText }}</pre>
+                </el-scrollbar>
+            </el-card>
+        </el-col>
+        <!-- 切换岗位信息录入 -->
     </el-row>
-    <el-row v-else-if="show === 2" class="row" justify="center" style="margin-top: 8vh">
+    <el-row v-else-if="show === 2" class="row" justify="center" style="margin-top: 8vh" :gutter="40">
         <el-col :span="8">
             <span class="font-active">岗位信息录入</span>
             <el-icon color="#5a5a7f" :size="20">
                 <Switch />
             </el-icon>
             <span class="font" @click="changeResume">简历信息录入</span>
-            <el-card style="height: 628px">
+            <el-card>
                 <el-carousel direction="vertical" type="card" :autoplay="true" class="carousel">
                     <el-carousel-item v-for="item in $store.state.PostMsg.data" :key="item.label">
                         <h3 text="xl" justify="center">{{ item.label }}</h3>
@@ -85,72 +97,11 @@
         </el-col>
     </el-row>
     <!-- 简历信息录入显示(加入对照) -->
-    <el-row :gutter="30" v-if="show === 3" class="row" justify="center" style="margin-top: 8vh">
-        <el-col :span="6">
-            <span class="font-active">简历信息录入</span>
-            <el-icon color="#5a5a7f" :size="20">
-                <Switch />
-            </el-icon>
-            <span class="font" @click="changePost">岗位信息录入</span>
-            <el-card>
-                <!-- 上传与识别简历 -->
-                <el-upload class="upload-demo" action="http://192.168.1.107:8080/api/upload" :on-success="handleSuccess"
-                    drag multiple>
-                    <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-                    <div class="el-upload__text">拖拽上传或<em>选择文件</em></div>
-                    <template #tip>
-                        <div class="el-upload__tip">
-                            支持DOCX、JPEG/PNG图片格式简历录入
-                        </div>
-                    </template>
-                </el-upload>
-
-                <br />
-
-                <!-- 录入简历结构 -->
-                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                    <el-form-item label="姓名" prop="name">
-                        <el-input v-model="ruleForm.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="年龄" prop="age">
-                        <el-input v-model="ruleForm.age"></el-input>
-                    </el-form-item>
-                    <el-form-item label="学历" prop="eBG">
-                        <el-select v-model="ruleForm.eBG" placeholder="请选择学历">
-                            <el-option label="大专" value="大专"></el-option>
-                            <el-option label="本科" value="本科"></el-option>
-                            <el-option label="研究生" value="研究生"></el-option>
-                            <el-option label="博士" value="博士"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="毕业院校" prop="school">
-                        <el-input v-model="ruleForm.school"></el-input>
-                    </el-form-item>
-                    <el-form-item label="工作年限" prop="wAge">
-                        <el-input v-model="ruleForm.wAge"></el-input>
-                    </el-form-item>
-                    <el-form-item label="求职目标" prop="jobName">
-                        <el-input v-model="ruleForm.jobName"></el-input>
-                    </el-form-item>
-                    <!-- 底部按钮 -->
-                    <el-form-item>
-                        <el-button color="#6378b6" type="primary" plain @click="submitForm('ruleForm')">录入</el-button>
-                        <el-button @click="resetForm('ruleForm')">重置</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-card>
-        </el-col>
-        <el-col :span="6">
-            <span class="font-active">原数据</span>
-            <el-card class="compare"></el-card>
-        </el-col>
-    </el-row>
 </template>
 
 <script>
 import { nanoid } from "nanoid";
 import { ElNotification } from "element-plus";
-// import store from '@/store';
 export default {
     data() {
         var checkAge = (rule, value, callback) => {
@@ -166,7 +117,14 @@ export default {
             }, 500);
         };
         return {
+            // 展示
             show: 1,
+            // 上传完成后对照显示
+            uploaded: false,
+            // 提示信息显示
+            showTip: false,
+            // 初始化识别原文
+            rawText: "",
             // 简历录入规则
             ruleForm: {
                 id: "",
@@ -242,7 +200,8 @@ export default {
         //上传简历拿到后端返回数据
         handleSuccess(response, file, fileList) {
             // 在这里拿到后端处理完的返回结果
-            console.log(response);
+            this.showTip = true;
+            this.rawText = response.rawText
             this.ruleForm.name = response.name;
             this.ruleForm.age = response.age;
             this.ruleForm.eBG = response.eBG;
@@ -254,7 +213,11 @@ export default {
         // 重置功能
         resetForm(ruleForm) {
             this.$refs[ruleForm].resetFields();
-            this.show = 3;
+
+        },
+        //设置原文对照
+        compare() {
+            this.uploaded = !this.uploaded;
         },
         // 岗位录入方法
         PsubmitForm(PruleForm) {
@@ -262,6 +225,7 @@ export default {
                 if (valid) {
                     // 添加id字段
                     this.PruleForm.id = nanoid();
+                    // console.log(this.PruleForm)
                     // 将打包的对象派发给vuex
                     this.$store.dispatch("PostMsg/addpost", this.PruleForm);
                 } else {
@@ -274,6 +238,7 @@ export default {
             this.$refs[PruleForm].resetFields();
         },
     },
+
 };
 </script>
 
@@ -300,9 +265,8 @@ export default {
 
 /* 对照盒子 */
 .compare {
-    height: 39.2rem;
-    background-color: #f7faff;
-    /* margin-top: 2rem; */
+    height: 40rem;
+    background-color: #fcfdff;
 }
 
 /* 岗位录入卡片样式 */
@@ -316,5 +280,26 @@ export default {
     color: #717ac8;
     text-align: center;
     background-color: #ffffff;
+}
+
+/* 右下角提示信息 */
+.tip {
+    float: right;
+    position: relative;
+    bottom: 1rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1rem;
+        color: #717ac8;
+
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* 处理数据换行 */
+.backend-data {
+    white-space: pre-line;
+     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #717ac8;
+    font-size: 1rem;
 }
 </style>

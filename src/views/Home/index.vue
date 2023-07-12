@@ -4,9 +4,9 @@
         <el-col :span="6">
             <h2 class="headmsg">欢迎使用蓝云简历系统</h2>
             <p class="font">
-                蓝云简历拥有简历识别功能，通过大数据训练模型，精准识别简历内容，提取关键字段；<br />拥有人岗匹配功能，帮助hr一键匹配所需简历；<br />提供数据可视化，直观查看简历和岗位信息，还可通过年龄段的图表展示轻松裁员（狗头）
+                蓝云简历拥有简历识别功能，通过大数据训练模型，精准识别简历内容，提取关键字段；<br />拥有人岗匹配功能，帮助hr一键匹配所需简历；<br />提供数据可视化，直观查看简历和岗位信息，还可通过图表展示直观查看学历分布、年龄分布等信息。
             </p>
-            <el-button @click="toPmsg" size="large" type="primary" color="#5369d7">体验人岗匹配</el-button>
+            <el-button @click="toPmatch" size="large" type="primary" color="#5369d7">体验人岗匹配</el-button>
             <el-button @click="toEnter" color="#626aef" size="large" plain>体验简历识别</el-button>
         </el-col>
         <!-- 贴图 -->
@@ -95,6 +95,13 @@ import ChartR from "@/components/chartR";
 import * as echarts from "echarts";
 import { ref, reactive, onMounted } from "vue";
 import router from '@/router';
+import { useStore } from "vuex";
+// 刷新首页时直接更新vuex数据
+// 使用vuex仓库
+const store = useStore();
+//向vuex中派发信息通知其向服务器请求数据
+store.dispatch("PostMsg/fetchData");
+store.dispatch("Resume/fetchData");
 
 //创建dom引用
 const chart = ref(); 
@@ -153,8 +160,8 @@ const initChart = () => {
     });
 };
 //路由跳转
-const toPmsg = () => {
-    router.push('/Pmsg')    
+const toPmatch = () => {
+    router.push('/Pmatch')    
 }
 const toEnter = () => {
     router.push('/enter')    

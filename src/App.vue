@@ -14,9 +14,10 @@
             <img src="@/assets/cloud.png" alt="" />
             <h2 class="name">蓝云简历</h2>
           </div>
-          <el-menu-item index="/main">简历信息</el-menu-item>
+          <el-menu-item index="/rmsg">简历信息</el-menu-item>
+          <el-menu-item index="/pmatch">人岗匹配</el-menu-item>
           <el-menu-item index="/enter">信息录入</el-menu-item>
-          <el-menu-item index="/pmsg">岗位信息</el-menu-item>
+          
         </el-menu>
       </el-header>
       <el-main>
