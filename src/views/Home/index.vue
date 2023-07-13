@@ -21,7 +21,7 @@
         <el-col :span="10" style="text-align: center">
             <el-row>
                 <el-col :span="6">
-                    <el-statistic :value="6666">
+                    <el-statistic :value="resumeCount">
                         <template #title>
                             <div style="display: inline-flex; align-items: center">
                                 简历总数
@@ -33,7 +33,7 @@
                     </el-statistic>
                 </el-col>
                 <el-col :span="6">
-                    <el-statistic :value="6666">
+                    <el-statistic :value="postNameCount">
                         <template #title>
                             <div style="display: inline-flex; align-items: center">
                                 岗位总数
@@ -45,44 +45,47 @@
                     </el-statistic>
                 </el-col>
                 <el-col :span="6">
-                    <el-statistic :value="52">
+                    <el-statistic :value="male">
                         <template #title>
                             <div style="display: inline-flex; align-items: center">
-                                男女比例
+                                男性总数
                                 <el-icon style="margin-left: 4px" :size="12">
                                     <Male />
                                 </el-icon>
                             </div>
                         </template>
-                        <template #suffix>/100</template>
                     </el-statistic>
                 </el-col>
                 <el-col :span="6">
-                    <el-statistic title="回复总数" :value="562">
-                        <template #suffix>
-                            <el-icon style="vertical-align: -0.125em">
-                                <ChatLineRound />
-                            </el-icon>
+                    <el-statistic :value="female">
+                        <template #title>
+                            <div style="display: inline-flex; align-items: center">
+                                女性总数
+                                <el-icon style="margin-left: 4px" :size="12">
+                                    <Female />
+                                </el-icon>
+                            </div>
                         </template>
                     </el-statistic>
                 </el-col>
+
             </el-row>
         </el-col>
     </el-row>
     <!-- 柱状图和饼状图 -->
     <el-row justify="center">
         <!-- 年龄分布柱状图 -->
-        <el-col :span="12" style="text-align: center">
+        <el-col :span="12" style="text-align: center" v-if="option.series[0].data">
             <div ref="chart" class="cookie"></div>
         </el-col>
         <!-- 学历和工作年限饼状图 -->
         <el-col :span="16">
             <el-row justify="center">
-                <el-col :span="9">
-                    <Chart />
+                <el-col :span="9" v-if="Edu">
+                    <Chart :Edu="Edu" />
                 </el-col>
-                <el-col :span="9">
-                    <ChartR />
+                <el-col :span="9" v-if="WorkTime">
+                    <ChartR :WorkTime="WorkTime" />
                 </el-col>
             </el-row>
         </el-col>
@@ -93,18 +96,86 @@
 import Chart from "@/components/chart";
 import ChartR from "@/components/chartR";
 import * as echarts from "echarts";
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, } from "vue";
 import router from '@/router';
 import { useStore } from "vuex";
+import { reqFindSum } from "@/api"
 // 刷新首页时直接更新vuex数据
 // 使用vuex仓库
 const store = useStore();
 //向vuex中派发信息通知其向服务器请求数据
 store.dispatch("PostMsg/fetchData");
 store.dispatch("Resume/fetchData");
+const postNameCount = ref()
+const resumeCount = ref()
+const Edu = ref()
+const WorkTime = ref()
+const male = ref()
+const female = ref()
+// const AGE =ref()
 
+reqFindSum()
+    .then((res) => {
+        if (res.status == 200) {
+            // console.log(res.data)
+            postNameCount.value = Number(res.data.postNameCount);
+            resumeCount.value = Number(res.data.resumeCount);
+            male.value = Number(res.data.male);
+            female.value = Number(res.data.female);
+            option.series[0].data = res.data.AGE.map(item => Number(item.count));
+            Edu.value = res.data.Edu.map(item => {
+                const value = Number(item.count);
+                let name;
+                switch (item.education) {
+                    case '本科':
+                        name = '本科';
+                        break;
+                    case '大专':
+                        name = '大专';
+                        break;
+                    case '硕士':
+                        name = '硕士';
+                        break;
+                    case '博士':
+                        name = '博士';
+                        break;
+                    case '其他':
+                        name = '其他';
+                        break;
+                    default:
+                        name = '';
+                }
+                return { value, name };
+            });
+            WorkTime.value = res.data.WorkTime.map(item => {
+                const value = Number(item.count);
+                let name;
+                switch (item.workTimeRange) {
+                    case '0-2':
+                        name = '0-2年';
+                        break;
+                    case '3-5':
+                        name = '3-5年';
+                        break;
+                    case '6-10':
+                        name = '6-10年';
+                        break;
+                    case '10以上':
+                        name = '10年以上';
+                        break;
+                    default:
+                        name = '';
+                }
+                return { value, name };
+            });
+            // console.log(Edu.value)
+        }
+    })
+    .catch((error) => {
+        console.log(error); // 这里捕获到的是错误对象
+    });
 //创建dom引用
-const chart = ref(); 
+const chart = ref();
 // 指定图表的配置项和数据
 const option = reactive({
     title: {
@@ -123,7 +194,7 @@ const option = reactive({
     xAxis: [
         {
             type: "category",
-            data: ["20-25岁", "26-30岁", "30-35岁", "36-40岁", "40岁以上"],
+            data: ["20-25岁", "26-30岁", "31-35岁", "36-40岁", "40岁以上"],
             axisTick: {
                 alignWithLabel: true,
             },
@@ -139,7 +210,7 @@ const option = reactive({
             name: "人数",
             type: "bar",
             barWidth: "40%",
-            data: [25, 29, 23, 15, 10],
+            data: [],
         },
     ],
 });
@@ -161,10 +232,10 @@ const initChart = () => {
 };
 //路由跳转
 const toPmatch = () => {
-    router.push('/Pmatch')    
+    router.push('/Pmatch')
 }
 const toEnter = () => {
-    router.push('/enter')    
+    router.push('/enter')
 }
 </script>
 
@@ -187,6 +258,7 @@ const toEnter = () => {
     font-size: 20px;
     color: #8f9eb0c8;
 }
+
 /* echarts图表样式 */
 .cookie {
     text-align: center;

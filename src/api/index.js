@@ -23,8 +23,14 @@ export const reqInsertPost = (data) =>
 export const reqDeletePost = (id) =>
   requests({ url: `/deletePost/${id}`, method: "post" });
 //修改岗位信息请求
-export const reqUpdatePost = (id,data) =>
+export const reqUpdatePost = (id, data) =>
   requests({ url: `/updatePost/${id}`, method: "post", data });
 // 查找岗位信息请求
 export const reqFindPost = () =>
   requests({ url: "/selectPost", method: "get" });
+
+// 首页信息请求
+export const reqFindSum = () => requests({ url: "/Range", method: "get" });
+
+//简历解析请求
+export const reqAnalysis = () => requests({ url: "/jieXi", method: "get" });

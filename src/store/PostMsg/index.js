@@ -91,7 +91,7 @@ export default {
         });
     },
     update(context, data) {
-      // context.commit("UPDATE", sizeForm);
+      // context.commit("UPDATE", data);
       //  console.log(data)
       // console.log(data.id)
       reqUpdatePost(data.id, data)

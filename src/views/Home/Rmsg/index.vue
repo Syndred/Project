@@ -6,12 +6,13 @@
       <el-card>
         <!-- 简历表格 -->
         <el-table :data="pagedTableData" style="width: 100%" max-height="400px" class="form">
-          <el-table-column prop="name" label="姓名" width="120" />
-          <el-table-column prop="age" label="年龄" width="120" />
-          <el-table-column prop="eBG" label="学历" width="120" />
-          <el-table-column prop="wAge" label="工作年限" width="120" />
-          <el-table-column prop="school" label="毕业院校" width="200" />
-          <el-table-column prop="jobName" label="求职目标" width="200" />
+          <el-table-column prop="name" label="姓名" width="110" />
+          <el-table-column prop="sex" label="性别" width="100" />
+          <el-table-column prop="age" label="年龄" width="100" />
+          <el-table-column prop="eBG" label="学历" width="100" />
+          <el-table-column prop="wAge" label="工作年限" width="100" />
+          <el-table-column prop="school" label="毕业院校" width="230" />
+          <el-table-column prop="jobName" label="求职目标" width="220" />
 
           <!-- 搜索框 -->
           <el-table-column align="right">
@@ -52,12 +53,20 @@
           <el-form-item label="年龄" prop="age">
             <el-input v-model="sizeForm.age" />
           </el-form-item>
+          <el-form-item label="性别" prop="sex">
+            <el-select v-model="sizeForm.sex" placeholder="请选择性别">
+              <el-option label="男" value="男"></el-option>
+              <el-option label="女" value="女"></el-option>
+              <el-option label="其他" value="其他"></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="学历" prop="eBG">
             <el-select v-model="sizeForm.eBG" placeholder="请选择学历">
-              <el-option label="大专" value="大专"></el-option>
+              <el-option label="专科" value="专科"></el-option>
               <el-option label="本科" value="本科"></el-option>
               <el-option label="研究生" value="研究生"></el-option>
               <el-option label="博士" value="博士"></el-option>
+              <el-option label="其他" value="其他"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="毕业院校" prop="school">
@@ -110,7 +119,10 @@
             <el-row>
               <el-col>
                 <el-tag class="mx-1" type="danger" effect="plain">
-                  15岁
+                  男
+                </el-tag>
+                <el-tag class="mx-1" type="danger" effect="plain">
+                  19岁
                 </el-tag>
                 <el-tag class="mx-1" effect="plain"> 本科 </el-tag>
                 <el-tag class="mx-1" type="warning" effect="plain">
@@ -166,12 +178,14 @@
       </el-card>
     </el-col>
   </el-row>
+  <!-- <Analysis v-if="show === 4"></Analysis> -->
 </template>
 
 <script>
 import { useStore } from "vuex";
 import { computed, ref, reactive } from "vue";
 import { ElNotification } from "element-plus";
+import Analysis from "@/components/analysis"
 // 搜索框初始化
 var search = ref("");
 
@@ -208,6 +222,7 @@ const rules = reactive({
     { min: 2, max: 5, message: "长度在 2 到 5 个字符", trigger: "blur" },
   ],
   age: [{ required: true, validator: checkAge, trigger: "change" }], // 修改为change触发
+  sex: [{ required: true, message: "请选择性别", trigger: "change" }],
   eBG: [{ required: true, message: "请选择学历", trigger: "change" }],
   school: [
     {
@@ -238,7 +253,8 @@ export default {
           data.eBG.includes(search.value) ||
           data.school.includes(search.value) ||
           data.wAge.includes(search.value) ||
-          data.jobName.includes(search.value)
+          data.jobName.includes(search.value) ||
+          data.sex.includes(search.value)
         );
       });
     });
@@ -263,6 +279,7 @@ export default {
       this.sizeForm.school = row.school;
       this.sizeForm.wAge = row.wAge;
       this.sizeForm.jobName = row.jobName;
+      this.sizeForm.sex = row.sex;
       //  console.log(this.sizeForm)
     }
     //点击取消时跳转回首页

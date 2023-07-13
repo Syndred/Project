@@ -5,21 +5,26 @@
 
 <script setup>
 import * as echarts from "echarts";
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, defineProps } from "vue";
 
+const { WorkTime } = defineProps({
+    WorkTime: {
+        type: Array
+    }
+})
 const chart = ref();//创建dom引用
 // 指定图表的配置项和数据
 const option = reactive({
     title: {
         text: '工作年限',
         left: 'center',
-        bottom: "80%"
+        bottom: "85%"
     },
     tooltip: {
         trigger: 'item'
     },
     legend: {
-        top: '20%',
+        top: '15%',
         left: 'center'
     },
     series: [
@@ -46,13 +51,7 @@ const option = reactive({
             labelLine: {
                 show: false
             },
-            data: [
-                { value: 104, name: '0年' },
-                { value: 73, name: '1-2年' },
-                { value: 58, name: '3-5年' },
-                { value: 48, name: '6-10年' },
-                { value: 30, name: '10年以上' }
-            ]
+            data: WorkTime
         }
     ]
 });

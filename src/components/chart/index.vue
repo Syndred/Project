@@ -5,7 +5,13 @@
 
 <script setup>
 import * as echarts from "echarts";
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted,defineProps } from "vue";
+
+const { Edu } = defineProps({
+    Edu: {
+        type:Array
+    }
+})
 
 const chart = ref();//创建dom引用
 // 指定图表的配置项和数据
@@ -16,10 +22,10 @@ const option = reactive({
     title: {
         text: '学历分布',
         left: 'center',
-        bottom: "80%"
+        bottom: "85%"
     },
     legend: {
-        top: '20%',
+        top: '15%',
         left: 'center'
     },
     tooltip: {
@@ -29,13 +35,7 @@ const option = reactive({
         {
             type: 'pie',
             radius: '50%',
-            data: [
-                { value: 66, name: '大专' },
-                { value: 95, name: '本科' },
-                { value: 58, name: '研究生' },
-                { value: 24, name: '博士' },
-                { value: 41, name: '其他' },
-            ],
+            data: Edu,
             emphasis: {
                 itemStyle: {
                     shadowBlur: 10,
