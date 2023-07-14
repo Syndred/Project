@@ -5,7 +5,7 @@
 
 <script setup>
 import * as echarts from "echarts";
-import { ref, reactive, onMounted,defineProps } from "vue";
+import { ref, reactive, onMounted } from "vue";
 
 const { Edu } = defineProps({
     Edu: {

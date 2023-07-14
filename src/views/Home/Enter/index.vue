@@ -17,7 +17,7 @@
         <!-- 上传与识别简历 -->
         <el-upload
           class="upload-demo"
-          action="http://10.200.29.82:8080/api/testLoad"
+          action="http://10.200.29.82:8080/api/uploadStep"
           :on-success="handleSuccess"
           :data="addData"
           :before-upload="handleUping"
@@ -277,15 +277,16 @@ export default {
     //上传简历拿到后端返回数据
     handleSuccess(response, file, fileList) {
       // 在这里拿到后端处理完的返回结果
+      console.log(response)
       this.showTip = true;
-      this.rawText = response.rawText;
-      this.ruleForm.name = response.name;
-      this.ruleForm.age = response.age;
-      this.ruleForm.sex = response.sex;
-      this.ruleForm.eBG = response.eBG;
-      this.ruleForm.school = response.school;
-      this.ruleForm.wAge = response.wAge;
-      this.ruleForm.jobName = response.jobName;
+      this.rawText = response.jieXi[0].rawText;
+      this.ruleForm.name = response.jieXi[0].name;
+      this.ruleForm.age = response.jieXi[0].age;
+      this.ruleForm.sex = response.jieXi[0].sex;
+      this.ruleForm.eBG = response.jieXi[0].eBG;
+      this.ruleForm.school = response.jieXi[0].school;
+      this.ruleForm.wAge = response.jieXi[0].wAge;
+      this.ruleForm.jobName = response.jieXi[0].jobName;
     },
 
     // 重置功能

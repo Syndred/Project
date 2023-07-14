@@ -12,8 +12,7 @@ export const reqDeleteOne = (id) =>
 export const reqUpdateOne = (id, data) =>
   requests({ url: `/updateOne/${id}`, method: "post", data });
 //发送查看所有简历信息的请求(axios发请求返回的是Promise对象)
-export const reqSelectAll = () =>
-  requests({ url: "/selectAll", method: "get" });
+export const reqSelectAll = () => requests({ url: "/getScore", method: "get" });
 
 // 岗位请求
 //增加岗位信息请求
@@ -33,4 +32,5 @@ export const reqFindPost = () =>
 export const reqFindSum = () => requests({ url: "/Range", method: "get" });
 
 //简历解析请求
-export const reqAnalysis = () => requests({ url: "/jieXi", method: "get" });
+export const reqAnalysis = (id) =>
+  requests({ url: `/GetJsonById/${id}`, method: "post" });
