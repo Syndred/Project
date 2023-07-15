@@ -18,13 +18,13 @@ const option = reactive({
     title: {
         text: '工作年限',
         left: 'center',
-        bottom: "85%"
+        bottom: "80%"
     },
     tooltip: {
         trigger: 'item'
     },
     legend: {
-        top: '15%',
+        top: '20%',
         left: 'center'
     },
     series: [

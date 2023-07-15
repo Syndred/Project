@@ -1,23 +1,23 @@
 <template>
   <!-- <h1>{{ $store.state.message }}</h1> -->
-  <el-row v-if="show === 1" class="row" justify="center" style="margin-top: 8vh">
-    <el-col :span="16">
-    <p class="rheader">简历信息</p>
+  <el-row v-if="show === 1" class="row" justify="center">
+    <el-col :span="18">
+      <p class="rheader">简历信息</p>
       <el-card>
         <!-- 简历表格 -->
-        <el-table :data="pagedTableData" style="width: 100%" max-height="400px" class="form">
-          <el-table-column prop="name" label="姓名" width="110" />
-          <el-table-column prop="sex" label="性别" width="100" />
-          <el-table-column prop="age" label="年龄" width="100" />
-          <el-table-column prop="eBG" label="学历" width="100" />
-          <el-table-column prop="wAge" label="工作年限" width="100" />
-          <el-table-column prop="school" label="毕业院校" width="230" />
-          <el-table-column prop="jobName" label="求职目标" width="220" />
+        <el-table :data="pagedTableData" max-height="auto" class="form">
+          <el-table-column prop="name" label="姓名" width="90vh" />
+          <el-table-column prop="sex" label="性别" width="70vh" />
+          <el-table-column prop="age" label="年龄" width="70vh" />
+          <el-table-column prop="eBG" label="学历" width="70vh" />
+          <el-table-column prop="wAge" label="工作年限" width="80vh" />
+          <el-table-column prop="school" label="毕业院校" width="130vh" />
+          <el-table-column prop="jobName" label="求职目标" width="120vh" />
 
           <!-- 搜索框 -->
           <el-table-column align="right">
             <template #header>
-              <el-input v-model="search" placeholder="关键字搜索" style="width: 205px" />
+              <el-input v-model="search" placeholder="关键字搜索" style="width: auto" />
             </template>
             <!-- 编辑删除解析按钮 -->
             <template #default="scope">
@@ -25,7 +25,7 @@
                 编辑
               </el-button>
               <el-button type="danger" @click="handleDelete(scope.row)">删除</el-button>
-              <el-button type="primary" color="#4890b9"  @click="handleAnalyze(scope.row)">解析</el-button>
+              <el-button type="primary" color="#4890b9" @click="handleAnalyze(scope.row)">解析</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -42,8 +42,8 @@
   </el-row>
 
   <!-- 修改页面展示 -->
-  <el-row v-else-if="show === 2" class="row" justify="center" style="margin-top: 12vh">
-    <el-col :span="6">
+  <el-row v-else-if="show === 2" class="row" justify="center" style="margin-top: 10vh">
+    <el-col :span="8">
       <el-card>
         <p class="header">信息编辑</p>
         <el-form :model="sizeForm" :rules="rules" ref="formRef" label-width="auto" style="margin-top: 10px">
@@ -88,14 +88,14 @@
   </el-row>
 
   <!-- 简历分析页面 -->
-  <Analysis v-if="show === 3" @backHome="backHome()" :id=id></Analysis>
+  <Analysis v-if="show === 3" @backHome="backHome()" :id="id"></Analysis>
 </template>
 
 <script>
 import { useStore } from "vuex";
 import { computed, ref, reactive } from "vue";
-import { ElNotification } from "element-plus";
-import Analysis from "@/components/analysis"
+import { ElNotification, ElMessage } from "element-plus";
+import Analysis from "@/components/analysis";
 // 搜索框初始化
 var search = ref("");
 
@@ -114,11 +114,33 @@ const sizeForm = reactive({
 const formRef = ref(null);
 //编辑规则
 const checkAge = (rule, value, callback) => {
+  const ageRegex = /^\d+$/;
+  // 使用正则表达式验证输入是否是数字
+  if (!ageRegex.test(value)) {
+    return callback(new Error("请输入数字"));
+  }
   if (!value) {
     return callback(new Error("年龄不能为空"));
   }
   setTimeout(() => {
     if (value < 16 || value > 80) {
+      callback(new Error("年龄不符合规范"));
+    } else {
+      callback();
+    }
+  }, 500);
+};
+const checkwAge = (rule, value, callback) => {
+  const ageRegex = /^\d+$/;
+  // 使用正则表达式验证输入是否是数字
+  if (!ageRegex.test(value)) {
+    return callback(new Error("请输入数字"));
+  }
+  if (!value) {
+    return callback(new Error("工作年限不能为空"));
+  }
+  setTimeout(() => {
+    if (value < 0 || value > 80) {
       callback(new Error("年龄不符合规范"));
     } else {
       callback();
@@ -140,15 +162,19 @@ const rules = reactive({
       message: "请输入毕业院校",
       trigger: "blur",
     },
+    { min: 2, max: 20, message: "请输入完整信息", trigger: "blur" },
   ],
-  wAge: [{ required: true, message: "请输入工作年限", trigger: "blur" }],
-  jobName: [{ required: true, message: "请输入求职信息", trigger: "blur" }],
+  wAge: [{ required: true, validator: checkwAge, trigger: "blur" }],
+  jobName: [
+    { min: 2, max: 20, message: "请输入完整信息", trigger: "blur" },
+    { required: true, message: "请输入求职信息", trigger: "blur" },
+  ],
 });
 
 export default {
   name: "Table",
-    components: {
-    Analysis
+  components: {
+    Analysis,
   },
   setup() {
     // 使用vuex仓库
@@ -174,11 +200,25 @@ export default {
     // 删除逻辑
     function handleDelete(row) {
       store.dispatch("Resume/del", row.id);
-      // console.log(row)
+      // console.log(store.state.Resume.msg.Umsg)
+      setTimeout(() => {
+        if (store.state.Resume.msg.Dmsg) {
+          ElMessage({
+            message: "删除成功！",
+            type: "success",
+          });
+          store.commit('Resume/RESETMSG')
+        } else {
+          ElMessage.error('删除失败！')
+        }
+      }, 500);
+
+      // console.log(row);
     }
+
     // 切换解析页面
     function handleAnalyze(row) {
-      id.value=row.id
+      id.value = row.id;
       show.value = 3;
       // console.log(row)
     }
@@ -212,16 +252,22 @@ export default {
           // console.log(sizeForm);
           //派发数据给vuex
           store.dispatch("Resume/update", sizeForm);
-          //弹出提示框
-          ElNotification.success({
-            title: "修改成功",
-            offset: 100,
-          });
+          //如果修改成功弹出提示框
+          setTimeout(() => {
+            if (store.state.Resume.msg.Umsg) {
+              ElNotification.success({
+                title: "修改成功",
+                offset: 100,
+              });
+              store.commit('Resume/RESETMSG')
+            } else {
+              ElMessage.error('修改失败！')
+            }
+          }, 500);
           // 返回展示页面
           show.value = 1;
         } else {
-          console.log("录入失败,请检查");
-          return false;
+          ElMessage.error("录入失败,请检查");
         }
       });
     }
@@ -265,7 +311,7 @@ export default {
       handleCurrentChange,
       pagedTableData,
       handleAnalyze,
-      id
+      id,
     };
   },
 };
@@ -280,6 +326,7 @@ export default {
   font-weight: bold;
   color: #32325d;
 }
+
 .rheader {
   margin: 1rem 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -305,5 +352,4 @@ export default {
 .example-showcase .el-loading-mask {
   z-index: 9;
 }
-
 </style>

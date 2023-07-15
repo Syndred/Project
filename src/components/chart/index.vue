@@ -22,10 +22,10 @@ const option = reactive({
     title: {
         text: '学历分布',
         left: 'center',
-        bottom: "85%"
+        bottom: "80%"
     },
     legend: {
-        top: '15%',
+        top: '20%',
         left: 'center'
     },
     tooltip: {

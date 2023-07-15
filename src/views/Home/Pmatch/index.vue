@@ -1,5 +1,5 @@
 <template>
-  <el-row style="margin-top: 20px" :gutter="40">
+  <el-row :gutter="40">
     <el-col :span="24">
       <div class="grid-content ep-bg-purple-dark head">
         <h2 class="headmsg">岗位信息与匹配</h2>
@@ -60,7 +60,7 @@
                 <h3 class="resume">{{ item.jobName }}</h3>
                 <el-rate v-model="ratevalue" disabled />
               </div>
-              <span class="highlight">{{item.total_score}}</span>
+              <span class="highlight">{{ item.total_score }}</span>
             </div>
             <el-divider style="margin: 3px 0" />
             <span class="name">{{ item.name }}</span>
@@ -82,6 +82,8 @@
 <script>
 import { useStore } from "vuex";
 import { ref, reactive, computed } from "vue";
+import { ElNotification, ElMessage, ElMessageBox } from "element-plus";
+
 
 export default {
   name: "Pmatch",
@@ -91,9 +93,9 @@ export default {
     // 拿取数据并保存
     let ResumeMsg = computed(() => store.state.Resume.data);
     let options = computed(() => store.state.PostMsg.data);
-        // 设置评分
-    const ratevalue = ref(4.5);
-    
+    // 设置评分
+    const ratevalue = ref(5);
+
     const value = ref("");
     const label = ref("");
     const id = ref("");
@@ -102,10 +104,19 @@ export default {
     const Flabel = ref("");
     const showBox = ref(false);
     // console.log(ratevalue.value)
+    // 简历匹配按钮
     function toggleBox() {
       showBox.value = !showBox.value;
-      // console.log(resumeFilter.value)
-      // console.log(matchedCount.value)
+      // console.log(resumeFilter)
+      // 匹配数据为空弹出提示且不出现匹配框
+      if (resumeFilter.value.length === 0) {
+        showBox.value = false
+        ElNotification({
+          title: 'No Data',
+          message: '匹配简历数据为空',
+          type: 'error',
+        })
+      }
     }
     // 监听选项改变获取label值
     function handleSelectChange(value) {
@@ -167,10 +178,18 @@ export default {
     const showCard = ref(true);
     // 简历修改按钮
     const changePost = () => {
-      showCard.value = false;
-      showBox.value = false;
-      Fvalue.value = value.value;
-      Flabel.value = label.value;
+      if (label.value) {
+        showCard.value = false;
+        showBox.value = false;
+        Fvalue.value = value.value;
+        Flabel.value = label.value;
+      } else {
+        ElMessage({
+          message: '请选择需要修改的岗位',
+          type: 'warning',
+        })
+      }
+
     };
     // 提交岗位修改
     const submitForm = () => {
@@ -192,7 +211,9 @@ export default {
             (option.value === formData.value && option.id !== formData.id)
         );
         if (exists) {
-          alert("已存在相同的名称/描述");
+          ElMessageBox.alert('已存在相同的名称/描述', '保存失败', {
+            confirmButtonText: 'OK',
+          })
         } else {
           store.dispatch("PostMsg/update", formData);
           value.value = "";
@@ -200,16 +221,29 @@ export default {
           showCard.value = true;
         }
       } else {
-        alert("选项不能为空");
+        ElMessageBox.alert('选项不能为空', '保存失败', {
+          confirmButtonText: 'OK',
+        })
       }
     };
 
     // 删除岗位信息
     const delPost = () => {
       store.dispatch("PostMsg/del", id.value);
-      value.value = "";
-      label.value = "";
-      showCard.value = true;
+      setTimeout(() => {
+        if (store.state.PostMsg.msg.Dmsg) {
+          ElMessage({
+            message: "删除成功！",
+            type: "success",
+          });
+          store.commit('PostMsg/RESETMSG')
+          value.value = "";
+          label.value = "";
+          showCard.value = true;
+        } else {
+          ElMessage.error('删除失败！')
+        }
+      }, 500);
     };
     // 返回逻辑
     const back = () => {
@@ -280,7 +314,7 @@ export default {
 /* 返回按钮 */
 .back {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   color: #b4b4cc;
   font-style: italic;
   font-weight: bold;

@@ -1,7 +1,7 @@
 <template>
   <!-- 简历分析页面 -->
   <el-row justify="center" style="margin-top: 6vh">
-    <el-col :span="10">
+    <el-col :span="12">
       <!-- 简历分析卡片 -->
       <el-card class="analyse">
         <!-- 返回图标 -->
@@ -20,8 +20,8 @@
               <img src="@/assets/head.png" alt="" />
             </div>
           </el-col>
-          <el-col :span="17">
-            <el-row style="margin: 1.3rem 0">
+          <el-col :span="17" v-if="data1.value.name">
+            <el-row style="margin: 1.3vh 0">
               <el-col>
                 <span class="name"> {{ data1.value.name }} </span>
                 <span class="name"> | </span>
@@ -45,9 +45,6 @@
                 <el-tag class="mx-1" type="warning" effect="plain">
                   {{ data1.value.wAge }}年工作经验
                 </el-tag>
-                <!-- <el-tag v-for="item in items" :key="item.label" class="mx-1" :type="item.type" effect="plain">
-                  {{ item.label }}
-                </el-tag> -->
               </el-col>
             </el-row>
           </el-col>

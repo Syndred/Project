@@ -9,7 +9,7 @@ export default {
           id: "0",
           name: "小红",
           age: "22",
-          sex:"男",
+          sex: "男",
           eBG: "本科",
           school: "广东技术师范大学",
           wAge: "1",
@@ -19,7 +19,7 @@ export default {
           id: "1",
           name: "小蓝",
           age: "23",
-          sex:"男",
+          sex: "男",
           eBG: "本科",
           school: "香港中文大学",
           wAge: "1",
@@ -29,7 +29,7 @@ export default {
           id: "2",
           name: "小绿",
           age: "33",
-          sex:"男",
+          sex: "男",
           eBG: "研究生",
           school: "深圳大学",
           wAge: "4",
@@ -39,7 +39,7 @@ export default {
           id: "3",
           name: "小粉",
           age: "32",
-          sex:"女",
+          sex: "女",
           eBG: "研究生",
           school: "厦门大学",
           wAge: "5",
@@ -49,13 +49,18 @@ export default {
           id: "4",
           name: "紫薇",
           age: "25",
-          sex:"男",
+          sex: "男",
           eBG: "大专",
           school: "深圳信息职业技术学院",
           wAge: "1",
           jobName: "老师",
         },
       ],
+      msg: {
+        Dmsg: false,
+        Umsg: false,
+        Amsg: false,
+      },
     };
   },
   getters: {},
@@ -65,11 +70,14 @@ export default {
     },
     ADD(state, value) {
       state.data.push(value);
+      state.msg.Amsg = true;
     },
     DEL(state, id) {
       const index = state.data.findIndex((item) => item.id === id); // 找到指定id的对象在数组中的索引
       if (index !== -1) {
         state.data.splice(index, 1); // 使用splice方法删除指定索引的对象
+        // 改变提示信息
+        state.msg.Dmsg = true;
       }
     },
     UPDATE(state, data) {
@@ -78,8 +86,15 @@ export default {
       const index = state.data.findIndex((item) => item.id === data.id);
       if (index !== -1) {
         state.data[index] = { ...state.data[index], ...data };
+        state.msg.Umsg = true;
+
         //  console.log("更新成功");
       }
+    },
+    RESETMSG(state) {
+      state.msg.Amsg = false;
+      state.msg.Umsg = false;
+      state.msg.Dmsg = false;
     },
   },
   actions: {
