@@ -39,7 +39,7 @@
             <el-select v-model="ruleForm.eBG" placeholder="请选择学历">
               <el-option label="专科" value="专科"></el-option>
               <el-option label="本科" value="本科"></el-option>
-              <el-option label="研究生" value="研究生"></el-option>
+              <el-option label="硕士" value="硕士"></el-option>
               <el-option label="博士" value="博士"></el-option>
               <el-option label="其他" value="其他"></el-option>
             </el-select>

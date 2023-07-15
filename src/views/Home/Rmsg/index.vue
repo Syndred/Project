@@ -1,6 +1,6 @@
 <template>
   <!-- <h1>{{ $store.state.message }}</h1> -->
-  <el-row v-if="show === 1" class="row" justify="center">
+  <el-row v-if="show === 1" class="row" justify="center" style="margin-top: 3vh;">
     <el-col :span="18">
       <p class="rheader">简历信息</p>
       <el-card>
@@ -64,7 +64,7 @@
             <el-select v-model="sizeForm.eBG" placeholder="请选择学历">
               <el-option label="专科" value="专科"></el-option>
               <el-option label="本科" value="本科"></el-option>
-              <el-option label="研究生" value="研究生"></el-option>
+              <el-option label="硕士" value="硕士"></el-option>
               <el-option label="博士" value="博士"></el-option>
               <el-option label="其他" value="其他"></el-option>
             </el-select>
