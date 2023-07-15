@@ -58,7 +58,7 @@ export default {
       state.msg.Amsg = false;
       state.msg.Umsg = false;
       state.msg.Dmsg = false;
-      console.log("RESETMSG被调用");
+      // console.log("RESETMSG被调用");
     },
   },
   actions: {
