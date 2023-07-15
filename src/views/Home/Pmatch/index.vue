@@ -216,9 +216,20 @@ export default {
           })
         } else {
           store.dispatch("PostMsg/update", formData);
-          value.value = "";
-          label.value = "";
-          showCard.value = true;
+          setTimeout(() => {
+            if (store.state.PostMsg.msg.Umsg) {
+              ElMessage({
+                message: "修改成功！",
+                type: "success",
+              });
+              store.commit('PostMsg/RESETMSG')
+              value.value = "";
+              label.value = "";
+              showCard.value = true;
+            } else {
+              ElMessage.error('修改失败！')
+            }
+          }, 500);
         }
       } else {
         ElMessageBox.alert('选项不能为空', '保存失败', {

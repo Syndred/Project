@@ -9,7 +9,7 @@
       <span class="font" @click="changePost">岗位信息录入</span>
       <el-card style="height: 40rem">
         <!-- 上传与识别简历 -->
-        <el-upload class="upload-demo" action="http://192.168.33.207:8080/api/uploadStep" :on-success="handleSuccess"
+        <el-upload class="upload-demo" action="http://10.200.62.119:8080/api/uploadStep" :on-success="handleSuccess"
           :data="addData" :before-upload="handleUping" drag :show-file-list="false">
           <el-icon class="el-icon--upload"><upload-filled /></el-icon>
           <div class="el-upload__text">拖拽上传或<em>选择文件</em></div>
@@ -108,7 +108,7 @@
 
 <script>
 import { nanoid } from "nanoid";
-import { ElNotification,ElMessage } from "element-plus";
+import { ElNotification, ElMessage } from "element-plus";
 export default {
   data() {
     var checkAge = (rule, value, callback) => {
@@ -223,7 +223,7 @@ export default {
           // 如果之前没传过id
           if (!this.addData.id) {
             this.ruleForm.id = nanoid();
-          }else{ this.ruleForm.id = this.addData.id}
+          } else { this.ruleForm.id = this.addData.id }
           // 将数据添加到vuex中
           this.$store.dispatch("Resume/add", this.ruleForm);
           setTimeout(() => {
@@ -233,11 +233,12 @@ export default {
                 offset: 100,
               });
               this.$store.commit('Resume/RESETMSG')
+              this.resetForm(ruleForm)
             } else {
               ElMessage.error('录入失败！')
             }
           }, 500);
-          
+
         } else {
           ElMessage.error("录入失败,请检查");
           return false;
@@ -267,7 +268,7 @@ export default {
     // 重置功能
     resetForm(ruleForm) {
       this.$refs[ruleForm].resetFields();
-      this.ruleForm=[]
+      this.ruleForm = []
     },
     //设置原文对照
     compare() {
@@ -282,7 +283,7 @@ export default {
           // console.log(this.PruleForm)
           // 将打包的对象派发给vuex
           this.$store.dispatch("PostMsg/addpost", this.PruleForm);
-           setTimeout(() => {
+          setTimeout(() => {
             if (this.$store.state.PostMsg.msg.Amsg) {
               ElNotification.success({
                 title: "录入成功",

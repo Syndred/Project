@@ -6,13 +6,13 @@
       <el-card>
         <!-- 简历表格 -->
         <el-table :data="pagedTableData" max-height="auto" class="form">
-          <el-table-column prop="name" label="姓名" width="90vh" />
-          <el-table-column prop="sex" label="性别" width="70vh" />
-          <el-table-column prop="age" label="年龄" width="70vh" />
-          <el-table-column prop="eBG" label="学历" width="70vh" />
-          <el-table-column prop="wAge" label="工作年限" width="80vh" />
-          <el-table-column prop="school" label="毕业院校" width="130vh" />
-          <el-table-column prop="jobName" label="求职目标" width="120vh" />
+          <el-table-column prop="name" label="姓名" width="110vh" />
+          <el-table-column prop="sex" label="性别" width="110vh" />
+          <el-table-column prop="age" label="年龄" width="110vh" />
+          <el-table-column prop="eBG" label="学历" width="110vh" />
+          <el-table-column prop="wAge" label="工作年限" width="150vh" />
+          <el-table-column prop="school" label="毕业院校" width="220vh" />
+          <el-table-column prop="jobName" label="求职目标" width="220vh" />
 
           <!-- 搜索框 -->
           <el-table-column align="right">

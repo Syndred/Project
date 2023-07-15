@@ -10,7 +10,7 @@
       <el-button @click="toEnter" color="#626aef" size="large" plain>体验简历识别</el-button>
     </el-col>
     <!-- 贴图 -->
-    <el-col :span="6" :offset="1">
+    <el-col :span="6">
       <div class="img"><img src="@/assets/pic.jpeg" alt="" /></div>
     </el-col>
     <el-col :span="16"><el-divider /></el-col>
@@ -215,6 +215,9 @@ const toEnter = () => {
   height: 11rem;
   object-fit: contain;
   border-radius: 1rem;
+}
+.img{
+  text-align: center;
 }
 
 /* row对齐方式 */
