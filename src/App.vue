@@ -17,7 +17,6 @@
           <el-menu-item index="/rmsg">简历信息</el-menu-item>
           <el-menu-item index="/pmatch">人岗匹配</el-menu-item>
           <el-menu-item index="/enter">信息录入</el-menu-item>
-          
         </el-menu>
       </el-header>
       <el-main>
@@ -28,18 +27,17 @@
 </template>
 
 <script>
-import router from './router';
+import router from "./router";
 
 export default {
   setup() {
-    const toIndex=() => {
-      router.push('/')
-    }
+    const toIndex = () => {
+      router.push("/");
+    };
     return {
-      toIndex
-    }
+      toIndex,
+    };
   },
-
 };
 </script>
 
@@ -48,18 +46,21 @@ export default {
   margin: 0;
   padding: 0;
 }
+
 /* header下面的整体样式 */
 .el-main {
   background-color: #ffffff;
   overflow: auto;
   height: 88vh;
 }
+
 /* 选项按钮样式 */
 .el-menu-item {
   margin-top: 1rem;
   font-size: 18px;
   font-weight: bold;
 }
+
 /* logo盒子样式 */
 .logo {
   display: flex;
@@ -67,6 +68,7 @@ export default {
   margin-right: 50vh;
   cursor: pointer;
 }
+
 /* logo盒子图片样式 */
 .logo img {
   width: 50px;
@@ -74,14 +76,15 @@ export default {
   object-fit: contain;
   margin-right: 10px;
 }
+
 /* logo盒子文字样式 */
 .name {
   font-style: italic;
   color: rgb(83, 105, 215);
 }
-.el-menu-demo {
 
+.el-menu-demo {
   background-color: rgb(255, 255, 255);
-justify-content: center;
+  justify-content: center;
 }
 </style>
