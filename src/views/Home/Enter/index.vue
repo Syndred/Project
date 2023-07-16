@@ -223,7 +223,9 @@ export default {
           // 如果之前没传过id
           if (!this.addData.id) {
             this.ruleForm.id = nanoid();
-          } else { this.ruleForm.id = this.addData.id }
+          } else {
+            this.ruleForm.id = this.addData.id;
+          }
           // 将数据添加到vuex中
           this.$store.dispatch("Resume/add", this.ruleForm);
           setTimeout(() => {
@@ -232,13 +234,12 @@ export default {
                 title: "录入成功",
                 offset: 100,
               });
-              this.$store.commit('Resume/RESETMSG')
-              this.resetForm(ruleForm)
+              this.$store.commit("Resume/RESETMSG");
+              this.resetForm(ruleForm);
             } else {
-              ElMessage.error('录入失败！')
+              ElMessage.error("录入失败！");
             }
           }, 500);
-
         } else {
           ElMessage.error("录入失败,请检查");
           return false;
@@ -248,7 +249,7 @@ export default {
 
     // 上传简历时的钩子，用于加id
     handleUping() {
-      this.addData.id = nanoid()
+      this.addData.id = nanoid();
     },
     //上传简历拿到后端返回数据
     handleSuccess(response, file, fileList) {
@@ -268,7 +269,7 @@ export default {
     // 重置功能
     resetForm(ruleForm) {
       this.$refs[ruleForm].resetFields();
-      this.ruleForm = []
+      this.ruleForm = [];
     },
     //设置原文对照
     compare() {
@@ -289,10 +290,10 @@ export default {
                 title: "录入成功",
                 offset: 100,
               });
-              this.$store.commit('PostMsg/RESETMSG')
+              this.$store.commit("PostMsg/RESETMSG");
               this.$refs[PruleForm].resetFields();
             } else {
-              ElMessage.error('录入失败！请检查是否存在相同岗位或描述')
+              ElMessage.error("录入失败！请检查是否存在相同岗位或描述");
             }
           }, 500);
         } else {

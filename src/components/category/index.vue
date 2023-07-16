@@ -8,9 +8,9 @@ import * as echarts from "echarts";
 import { ref, reactive, onMounted } from "vue";
 const { AGE } = defineProps({
     AGE: {
-        type: Array
-    }
-})
+        type: Array,
+    },
+});
 
 //创建dom引用
 const chart = ref();
@@ -56,19 +56,17 @@ const option = reactive({
 onMounted(() => {
     setTimeout(() => {
         initChart();
-    }, 400)
-})
+    }, 400);
+});
 const initChart = () => {
     // 基于准备好的dom初始化echarts实例
-    var myChart = echarts.init(chart.value)
+    var myChart = echarts.init(chart.value);
     // 使用指定的配置项和数据显示图表
     myChart.setOption(option);
-    window.addEventListener('resize', () => {
-        myChart.resize()
-    })
-}
+    window.addEventListener("resize", () => {
+        myChart.resize();
+    });
+};
 </script>
-
-
 
 <style scoped></style>

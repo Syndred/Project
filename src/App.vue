@@ -2,14 +2,8 @@
   <div class="common-layout">
     <el-container>
       <el-header>
-        <el-menu
-          :default-active="$route.path"
-          :router="true"
-          class="el-menu-demo"
-          mode="horizontal"
-          text-color="#6b7c93"
-          active-text-color="#717ac8"
-        >
+        <el-menu :default-active="$route.path" :router="true" class="el-menu-demo" mode="horizontal" text-color="#6b7c93"
+          active-text-color="#717ac8">
           <div class="logo" @click="toIndex">
             <img src="@/assets/cloud.png" alt="" />
             <h2 class="name">蓝云简历</h2>

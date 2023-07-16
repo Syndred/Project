@@ -20,15 +20,11 @@
               <img src="@/assets/head.png" alt="" />
             </div>
           </el-col>
-          <el-col
-            :span="17"
-            v-if="data1.value.name"
-            style="
+          <el-col :span="17" v-if="data1.value.name" style="
               display: flex;
               flex-direction: column;
               justify-content: space-evenly;
-            "
-          >
+            ">
             <el-row>
               <el-col>
                 <span class="name"> {{ data1.value.name }} </span>

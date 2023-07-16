@@ -1,5 +1,5 @@
 <template>
-  <el-row justify="center" style="margin: 5vh 0" >
+  <el-row justify="center" style="margin: 5vh 0">
     <!-- 描述简介 -->
     <el-col :span="6">
       <h2 class="headmsg">欢迎使用蓝云简历系统</h2>
@@ -185,12 +185,6 @@ const toEnter = () => {
 </script>
 
 <style scoped>
-/* 引入字体 */
-/* @font-face {
-    font-family: "myFont";
-    src: url("@/assets/font.otf");
-} */
-
 /* 介绍字体标题 */
 .headmsg {
   color: #32325d;
@@ -216,7 +210,8 @@ const toEnter = () => {
   object-fit: contain;
   border-radius: 1rem;
 }
-.img{
+
+.img {
   text-align: center;
 }
 

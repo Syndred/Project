@@ -84,7 +84,6 @@ import { useStore } from "vuex";
 import { ref, reactive, computed } from "vue";
 import { ElNotification, ElMessage, ElMessageBox } from "element-plus";
 
-
 export default {
   name: "Pmatch",
   setup() {
@@ -110,12 +109,12 @@ export default {
       // console.log(resumeFilter)
       // 匹配数据为空弹出提示且不出现匹配框
       if (resumeFilter.value.length === 0) {
-        showBox.value = false
+        showBox.value = false;
         ElNotification({
-          title: 'No Data',
-          message: '匹配简历数据为空',
-          type: 'error',
-        })
+          title: "No Data",
+          message: "匹配简历数据为空",
+          type: "error",
+        });
       }
     }
     // 监听选项改变获取label值
@@ -138,42 +137,12 @@ export default {
         );
       });
     });
-    // 计算匹配的字符串个数
-    // const matchedCount = computed(() => {
-    //   return resumeFilter.value.map((data) => {
-    //     const jobNameCount = data.jobName.split(label.value).length - 1;
-    //     const labelCount = label.value.split(data.jobName).length - 1;
-    //     console.log(jobNameCount, labelCount, resumeFilter.value)
-    //     return labelCount > 0 ? jobNameCount / labelCount : 0;
-    //   });
-    // });
 
     // 清除筛选
     const handleClear = () => {
       label.value = "";
     };
 
-    //     const calculateScore = computed(() => {
-    //   const matchCount = value.value.split('').reduce((count, char) => {
-    //     if (this.label.includes(char)) {
-    //       return count + 1;
-    //     } else {
-    //       return count;
-    //     }
-    //   }, 0);
-
-    //   if (matchCount === this.label.length) {
-    //     return 100;
-    //   } else if (matchCount === 1) {
-    //     return 80;
-    //   } else if (matchCount === 2) {
-    //     return 90;
-    //   } else if (matchCount === 3) {
-    //     return 95;
-    //   } else {
-    //     return 0;
-    //   }
-    // });
     //初始化修改简历页面
     const showCard = ref(true);
     // 简历修改按钮
@@ -185,11 +154,10 @@ export default {
         Flabel.value = label.value;
       } else {
         ElMessage({
-          message: '请选择需要修改的岗位',
-          type: 'warning',
-        })
+          message: "请选择需要修改的岗位",
+          type: "warning",
+        });
       }
-
     };
     // 提交岗位修改
     const submitForm = () => {
@@ -200,8 +168,6 @@ export default {
         value: Fvalue.value,
       };
 
-      // console.log(value.value,formData.value);
-      // console.log(options.value, formData.label);
       // 排空
       if (formData.label !== "" && formData.value !== "") {
         // 检查是否存在相同的名称/描述
@@ -211,9 +177,9 @@ export default {
             (option.value === formData.value && option.id !== formData.id)
         );
         if (exists) {
-          ElMessageBox.alert('已存在相同的名称/描述', '保存失败', {
-            confirmButtonText: 'OK',
-          })
+          ElMessageBox.alert("已存在相同的名称/描述", "保存失败", {
+            confirmButtonText: "OK",
+          });
         } else {
           store.dispatch("PostMsg/update", formData);
           setTimeout(() => {
@@ -222,19 +188,19 @@ export default {
                 message: "修改成功！",
                 type: "success",
               });
-              store.commit('PostMsg/RESETMSG')
+              store.commit("PostMsg/RESETMSG");
               value.value = "";
               label.value = "";
               showCard.value = true;
             } else {
-              ElMessage.error('修改失败！')
+              ElMessage.error("修改失败！");
             }
           }, 500);
         }
       } else {
-        ElMessageBox.alert('选项不能为空', '保存失败', {
-          confirmButtonText: 'OK',
-        })
+        ElMessageBox.alert("选项不能为空", "保存失败", {
+          confirmButtonText: "OK",
+        });
       }
     };
 
@@ -247,12 +213,12 @@ export default {
             message: "删除成功！",
             type: "success",
           });
-          store.commit('PostMsg/RESETMSG')
+          store.commit("PostMsg/RESETMSG");
           value.value = "";
           label.value = "";
           showCard.value = true;
         } else {
-          ElMessage.error('删除失败！')
+          ElMessage.error("删除失败！");
         }
       }, 500);
     };

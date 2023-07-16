@@ -1,6 +1,6 @@
 <template>
   <!-- <h1>{{ $store.state.message }}</h1> -->
-  <el-row v-if="show === 1" class="row" justify="center" style="margin-top: 3vh;">
+  <el-row v-if="show === 1" class="row" justify="center" style="margin-top: 3vh">
     <el-col :span="18">
       <p class="rheader">简历信息</p>
       <el-card>
@@ -207,9 +207,9 @@ export default {
             message: "删除成功！",
             type: "success",
           });
-          store.commit('Resume/RESETMSG')
+          store.commit("Resume/RESETMSG");
         } else {
-          ElMessage.error('删除失败！')
+          ElMessage.error("删除失败！");
         }
       }, 500);
 
@@ -259,9 +259,9 @@ export default {
                 title: "修改成功",
                 offset: 100,
               });
-              store.commit('Resume/RESETMSG')
+              store.commit("Resume/RESETMSG");
             } else {
-              ElMessage.error('修改失败！')
+              ElMessage.error("修改失败！");
             }
           }, 500);
           // 返回展示页面
