@@ -67,6 +67,7 @@ export default {
       reqFindPost()
         .then((res) => {
           if (res.status == 200) {
+            // console.log(res.data)
             commit("FIND", res.data);
           }
         })

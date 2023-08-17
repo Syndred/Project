@@ -9,7 +9,7 @@
       <span class="font" @click="changePost">岗位信息录入</span>
       <el-card style="height: 40rem">
         <!-- 上传与识别简历 -->
-        <el-upload class="upload-demo" action="http://192.168.33.207:8080/api/uploadStep" :on-success="handleSuccess"
+        <el-upload class="upload-demo" action=" https://7648-113-100-10-5.ngrok-free.app/api/uploadStep" :on-success="handleSuccess"
           :data="addData" :before-upload="handleUping" drag :show-file-list="false">
           <el-icon class="el-icon--upload"><upload-filled /></el-icon>
           <div class="el-upload__text">拖拽上传或<em>选择文件</em></div>

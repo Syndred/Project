@@ -103,8 +103,8 @@ import { reqFindSum } from "@/api";
 // 使用vuex仓库
 const store = useStore();
 //向vuex中派发信息通知其向服务器请求数据
-store.dispatch("PostMsg/fetchData");
-store.dispatch("Resume/fetchData");
+// store.dispatch("PostMsg/fetchData");
+// store.dispatch("Resume/fetchData");
 const postNameCount = ref();
 const resumeCount = ref();
 const Edu = ref();

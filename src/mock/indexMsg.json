@@ -1,0 +1,68 @@
+{
+  "WorkTime": [
+    {
+      "workTimeRange": "6-10",
+      "count": "12"
+    },
+    {
+      "workTimeRange": "10以上",
+      "count": "9"
+    },
+    {
+      "workTimeRange": "0-2",
+      "count": "7"
+    },
+    {
+      "workTimeRange": "3-5",
+      "count": "12"
+    }
+  ],
+  "Edu": [
+    {
+      "education": "博士",
+      "count": "7"
+    },
+    {
+      "education": "本科",
+      "count": "11"
+    },
+    {
+      "education": "其他",
+      "count": "5"
+    },
+    {
+      "education": "硕士",
+      "count": "9"
+    },
+    {
+      "education": "大专",
+      "count": "8"
+    }
+  ],
+  "postNameCount": "11",
+  "female": "21",
+  "male": "19",
+  "AGE": [
+    {
+      "ageRange": "20-25",
+      "count": "9"
+    },
+    {
+      "ageRange": "26-30",
+      "count": "14"
+    },
+    {
+      "ageRange": "31-35",
+      "count": "10"
+    },
+    {
+      "ageRange": "36-40",
+      "count": "4"
+    },
+    {
+      "ageRange": "40+",
+      "count": "3"
+    }
+  ],
+  "resumeCount": "40"
+}

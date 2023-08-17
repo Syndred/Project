@@ -4,8 +4,8 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       "/api": {
-        // target: "https://f95b-113-118-80-159.ngrok-free.app",
-        target: "http://192.168.33.207:8080",
+        // target: "https://7648-113-100-10-5.ngrok-free.app",
+        // target: "http://192.168.33.207:8080",
       },
     },
   },

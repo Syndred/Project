@@ -6,7 +6,7 @@ import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import axios from "axios";
-
+import "@/mock/mockServe";
 const app = createApp(App);
 
 app.use(ElementPlus);
