@@ -17,7 +17,7 @@ requests.interceptors.request.use((config) => {
 // 响应拦截器
 requests.interceptors.response.use(
   (res) => {
-    // 成功回调    
+    // 成功回调
     // console.log(res)
     return res;
   },

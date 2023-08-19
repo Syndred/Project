@@ -20,8 +20,12 @@
               <img src="@/assets/head.png" alt="" />
             </div>
           </el-col>
-          <el-col :span="17" v-if="data1.value.name">
-            <el-row style="margin: 1.3vh 0">
+          <el-col :span="17" v-if="data1.value.name" style="
+              display: flex;
+              flex-direction: column;
+              justify-content: space-evenly;
+            ">
+            <el-row>
               <el-col>
                 <span class="name"> {{ data1.value.name }} </span>
                 <span class="name"> | </span>
@@ -110,12 +114,12 @@ import { reqAnalysis } from "@/api";
 
 const data = reactive({ value: {} });
 const data1 = reactive({ value: {} });
-const props = defineProps(['id'])
+const props = defineProps(["id"]);
 // console.log(props.id)
 reqAnalysis(props.id)
   .then((res) => {
     data.value = JSON.parse(res.data.analysisJson);
-    data1.value=res.data
+    data1.value = res.data;
     // console.log(res.data);
   })
   .catch((error) => {
@@ -133,6 +137,7 @@ reqAnalysis(props.id)
   font-weight: bold;
   color: #32325d;
 }
+
 .header2 {
   margin: 1.1rem 0 0 1.1rem;
   font-family: Verdana, Geneva, Tahoma, sans-serif;

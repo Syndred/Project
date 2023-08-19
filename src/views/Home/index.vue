@@ -1,5 +1,5 @@
 <template>
-  <el-row justify="center" style="margin: 5vh 0" >
+  <el-row justify="center" style="margin: 5vh 0">
     <!-- 描述简介 -->
     <el-col :span="6">
       <h2 class="headmsg">欢迎使用蓝云简历系统</h2>
@@ -10,7 +10,7 @@
       <el-button @click="toEnter" color="#626aef" size="large" plain>体验简历识别</el-button>
     </el-col>
     <!-- 贴图 -->
-    <el-col :span="6" :offset="1">
+    <el-col :span="6">
       <div class="img"><img src="@/assets/pic.jpeg" alt="" /></div>
     </el-col>
     <el-col :span="16"><el-divider /></el-col>
@@ -185,12 +185,6 @@ const toEnter = () => {
 </script>
 
 <style scoped>
-/* 引入字体 */
-/* @font-face {
-    font-family: "myFont";
-    src: url("@/assets/font.otf");
-} */
-
 /* 介绍字体标题 */
 .headmsg {
   color: #32325d;
@@ -215,6 +209,10 @@ const toEnter = () => {
   height: 11rem;
   object-fit: contain;
   border-radius: 1rem;
+}
+
+.img {
+  text-align: center;
 }
 
 /* row对齐方式 */
